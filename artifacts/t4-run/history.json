@@ -1,0 +1,267 @@
+{
+  "compile_seconds": 10.297331676999988,
+  "training_seconds": 413.23155395,
+  "final_step": 750,
+  "train": [
+    {
+      "step": 25,
+      "loss": 1.7109146118164062,
+      "answer_token_accuracy": 0.3529052734375,
+      "gradient_norm": 2.126555919647217,
+      "learning_rate": 0.0002400000230409205,
+      "examples_per_second": 3829.181766654815
+    },
+    {
+      "step": 50,
+      "loss": 1.5538431406021118,
+      "answer_token_accuracy": 0.423583984375,
+      "gradient_norm": 1.7707635164260864,
+      "learning_rate": 0.0004900000058114529,
+      "examples_per_second": 3695.584829442674
+    },
+    {
+      "step": 75,
+      "loss": 1.1590087413787842,
+      "answer_token_accuracy": 0.5377197265625,
+      "gradient_norm": 3.7080557346343994,
+      "learning_rate": 0.0007400000467896461,
+      "examples_per_second": 3610.944917919803
+    },
+    {
+      "step": 100,
+      "loss": 0.32188504934310913,
+      "answer_token_accuracy": 0.910400390625,
+      "gradient_norm": 5.143802642822266,
+      "learning_rate": 0.0009899999713525176,
+      "examples_per_second": 3468.571123706097
+    },
+    {
+      "step": 125,
+      "loss": 0.14180906116962433,
+      "answer_token_accuracy": 0.9609375,
+      "gradient_norm": 4.901682376861572,
+      "learning_rate": 0.0009999467292800546,
+      "examples_per_second": 3493.6316264250954
+    },
+    {
+      "step": 150,
+      "loss": 0.21902146935462952,
+      "answer_token_accuracy": 0.9208984375,
+      "gradient_norm": 4.7688307762146,
+      "learning_rate": 0.0009997779270634055,
+      "examples_per_second": 3606.234307366635
+    },
+    {
+      "step": 175,
+      "loss": 0.3218439221382141,
+      "answer_token_accuracy": 0.893310546875,
+      "gradient_norm": 8.36125659942627,
+      "learning_rate": 0.0009994936408475041,
+      "examples_per_second": 3678.3789398610593
+    },
+    {
+      "step": 200,
+      "loss": 0.09605036675930023,
+      "answer_token_accuracy": 0.9732666015625,
+      "gradient_norm": 3.5470383167266846,
+      "learning_rate": 0.0009990938706323504,
+      "examples_per_second": 3724.729382629363
+    },
+    {
+      "step": 225,
+      "loss": 0.0737149715423584,
+      "answer_token_accuracy": 0.9771728515625,
+      "gradient_norm": 3.3163483142852783,
+      "learning_rate": 0.0009985787328332663,
+      "examples_per_second": 3711.292846280708
+    },
+    {
+      "step": 250,
+      "loss": 0.004970218054950237,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.2438824623823166,
+      "learning_rate": 0.0009979482274502516,
+      "examples_per_second": 3756.63904747339
+    },
+    {
+      "step": 275,
+      "loss": 0.06542173027992249,
+      "answer_token_accuracy": 0.9783935546875,
+      "gradient_norm": 3.621762275695801,
+      "learning_rate": 0.0009972027037292719,
+      "examples_per_second": 2350.998608012893
+    },
+    {
+      "step": 300,
+      "loss": 0.031640902161598206,
+      "answer_token_accuracy": 0.9935302734375,
+      "gradient_norm": 1.6265335083007812,
+      "learning_rate": 0.0009963423945009708,
+      "examples_per_second": 3680.4572591472693
+    },
+    {
+      "step": 325,
+      "loss": 0.009787175804376602,
+      "answer_token_accuracy": 0.9964599609375,
+      "gradient_norm": 0.7065603137016296,
+      "learning_rate": 0.0009953672997653484,
+      "examples_per_second": 3766.8383773589367
+    },
+    {
+      "step": 350,
+      "loss": 0.007802443578839302,
+      "answer_token_accuracy": 0.9984130859375,
+      "gradient_norm": 0.5868878960609436,
+      "learning_rate": 0.0009942777687683702,
+      "examples_per_second": 3827.7095658244257
+    },
+    {
+      "step": 375,
+      "loss": 0.0008872686885297298,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.019458390772342682,
+      "learning_rate": 0.0009930741507560015,
+      "examples_per_second": 3888.872301810491
+    },
+    {
+      "step": 400,
+      "loss": 0.00045450759353116155,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0031347600743174553,
+      "learning_rate": 0.0009917567949742079,
+      "examples_per_second": 3956.764207823333
+    },
+    {
+      "step": 425,
+      "loss": 0.0003624693490564823,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.002425734419375658,
+      "learning_rate": 0.0009903257014229894,
+      "examples_per_second": 4035.7633126039136
+    },
+    {
+      "step": 450,
+      "loss": 0.00031137350015342236,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0020867851562798023,
+      "learning_rate": 0.0009887816850095987,
+      "examples_per_second": 4042.506899409662
+    },
+    {
+      "step": 475,
+      "loss": 0.0002666868094820529,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0017864113906398416,
+      "learning_rate": 0.0009871248621493578,
+      "examples_per_second": 4042.7657931067183
+    },
+    {
+      "step": 500,
+      "loss": 0.00023307328228838742,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0015608817338943481,
+      "learning_rate": 0.0009853558149188757,
+      "examples_per_second": 4040.2559914213643
+    },
+    {
+      "step": 525,
+      "loss": 0.00020532582129817456,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0013820234453305602,
+      "learning_rate": 0.000983474892564118,
+      "examples_per_second": 3122.6400685799945
+    },
+    {
+      "step": 550,
+      "loss": 0.00017994266818277538,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0012151156552135944,
+      "learning_rate": 0.0009814825607463717,
+      "examples_per_second": 4034.182327166922
+    },
+    {
+      "step": 575,
+      "loss": 0.00015638356853742152,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0010612808400765061,
+      "learning_rate": 0.0009793795179575682,
+      "examples_per_second": 4038.2227879279226
+    },
+    {
+      "step": 600,
+      "loss": 0.00014155734970699996,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.000959715514909476,
+      "learning_rate": 0.0009771659970283508,
+      "examples_per_second": 4039.0410253391437
+    },
+    {
+      "step": 625,
+      "loss": 0.00012423105363268405,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0008497566450387239,
+      "learning_rate": 0.0009748427546583116,
+      "examples_per_second": 4037.6724383811224
+    },
+    {
+      "step": 650,
+      "loss": 0.00010898797336267307,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0007498669438064098,
+      "learning_rate": 0.0009724104311317205,
+      "examples_per_second": 4035.838814319162
+    },
+    {
+      "step": 675,
+      "loss": 9.562895866110921e-05,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0006588159594684839,
+      "learning_rate": 0.000969869492109865,
+      "examples_per_second": 4033.8349506916443
+    },
+    {
+      "step": 700,
+      "loss": 8.352322765858844e-05,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.00057791150175035,
+      "learning_rate": 0.0009672207524999976,
+      "examples_per_second": 4039.633108686208
+    },
+    {
+      "step": 725,
+      "loss": 7.498209015466273e-05,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0005205210763961077,
+      "learning_rate": 0.0009644648525863886,
+      "examples_per_second": 4042.374079225702
+    },
+    {
+      "step": 750,
+      "loss": 6.52065355097875e-05,
+      "answer_token_accuracy": 1.0,
+      "gradient_norm": 0.0004552646423690021,
+      "learning_rate": 0.000961602374445647,
+      "examples_per_second": 4038.28470798974
+    }
+  ],
+  "validation": [
+    {
+      "loss": 0.025559867918491363,
+      "token_accuracy": 0.9906250596046448,
+      "exact_match": 0.96295,
+      "step": 250
+    },
+    {
+      "loss": 0.00024884127196855843,
+      "token_accuracy": 1.0,
+      "exact_match": 1.0,
+      "step": 500
+    },
+    {
+      "loss": 6.967743538552896e-05,
+      "token_accuracy": 1.0,
+      "exact_match": 1.0,
+      "step": 750
+    }
+  ]
+}

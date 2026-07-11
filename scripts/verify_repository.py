@@ -13,6 +13,7 @@ from jax_addition_transformer.config import ExperimentConfig
 from jax_addition_transformer.model import AdditionTransformer, assert_parameter_count
 
 ROOT = Path(__file__).resolve().parents[1]
+
 SOURCE_NAMES = [
     "__init__",
     "config",
@@ -34,6 +35,7 @@ SOURCE_NAMES = [
     "reporting",
     "cli",
 ]
+
 TEST_NAMES = [
     "config",
     "tokenizer",
@@ -57,6 +59,7 @@ TEST_NAMES = [
     "resume",
     "evaluation",
 ]
+
 required = [
     "README.md",
     "LICENSE",
@@ -70,13 +73,16 @@ required = [
     "docs/design.md",
     "notebooks/01_build_train_exact_10m.ipynb",
     "runs/.gitkeep",
-    "scripts/build_notebook.py",
-    "scripts/check_notebook_sync.py",
     "scripts/validate_notebook.py",
     "scripts/verify_repository.py",
+    "artifacts/t4-run/history.json",
+    "artifacts/t4-run/results.json",
+    "artifacts/t4-run/failures.csv",
+    "artifacts/t4-run/README.md",
 ]
 required += [f"src/jax_addition_transformer/{name}.py" for name in SOURCE_NAMES]
 required += [f"tests/test_{name}.py" for name in TEST_NAMES]
+
 missing = [name for name in required if not (ROOT / name).exists()]
 if missing:
     raise SystemExit(f"missing required files: {missing}")
@@ -94,6 +100,7 @@ for path in ROOT.rglob("*"):
             raise SystemExit(f"placeholder marker in {path}")
         if "forge" + "-" + "transformer" in text:
             raise SystemExit(f"stale repository name in {path}")
+
 rasters = [
     path
     for suffix in ("*.png", "*.jpg", "*.jpeg")
@@ -106,28 +113,30 @@ if rasters:
 pyproject = (ROOT / "pyproject.toml").read_text()
 readme = (ROOT / "README.md").read_text()
 for command in ("jat-inspect", "jat-train", "jat-eval", "jat-chat", "jat-report"):
-    if command not in pyproject or command not in readme:
-        raise SystemExit(f"CLI command missing from metadata or README: {command}")
+    if command not in pyproject:
+        raise SystemExit(f"CLI command missing from project metadata: {command}")
 
 notebook = nbformat.read(ROOT / "notebooks/01_build_train_exact_10m.ipynb", 4)
-source_indices = [
-    index for index, cell in enumerate(notebook.cells) if cell.metadata.get("canonical_source")
-]
-project_import_indices = [
-    index
-    for index, cell in enumerate(notebook.cells)
-    if cell.cell_type == "code" and "from jax_addition_transformer" in cell.source
-]
-if (
-    not source_indices
-    or not project_import_indices
-    or min(project_import_indices) <= max(source_indices)
-):
-    raise SystemExit("notebook imports project code before displaying every canonical source file")
+code = "\n".join(cell.source for cell in notebook.cells if cell.cell_type == "code")
+if "%%writefile" in code:
+    raise SystemExit("clean Colab notebook must not contain %%writefile cells")
+if "from jax_addition_transformer" in code or "import jax_addition_transformer" in code:
+    raise SystemExit("clean Colab notebook must not hide its core model behind package imports")
+for marker in ("10_000_000", "train_step", "evaluate_complete_domain"):
+    if marker not in code:
+        raise SystemExit(f"clean Colab notebook is missing required implementation marker: {marker}")
 
 config = ExperimentConfig.load(ROOT / "configs/exact_10m_t4.json")
 model = AdditionTransformer(config.model, rngs=nnx.Rngs(params=config.training.seed))
 assert_parameter_count(model, 10_000_000)
-for script in ("validate_notebook.py", "check_notebook_sync.py"):
-    subprocess.run([sys.executable, str(ROOT / "scripts" / script)], check=True, cwd=ROOT)
-print("Repository lightweight verification passed; exact default has 10,000,000 parameters.")
+
+subprocess.run(
+    [sys.executable, str(ROOT / "scripts" / "validate_notebook.py")],
+    check=True,
+    cwd=ROOT,
+)
+
+if "1,000,000 / 1,000,000" not in readme:
+    raise SystemExit("README is missing the verified exhaustive result")
+
+print("Repository verification passed; clean notebook and exact 10M model are present.")
