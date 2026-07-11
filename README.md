@@ -25,6 +25,25 @@ The exhaustive evaluation took 144.31 seconds. Machine-generated measurements ar
 
 This result is limited to the fixed domain `0..999` and the representation described below. It is not a claim about four-digit or arbitrary-length addition.
 
+## Training
+
+The model reached 100% validation exact-match accuracy by step 500 and stopped at step 750 after achieving perfect validation accuracy twice.
+
+![Training loss, token accuracy, validation exact match, and gradient norm](assets/training_curves.png)
+
+## Exhaustive evaluation
+
+The saved checkpoint was evaluated with greedy autoregressive decoding across every ordered pair from `0 + 0` through `999 + 999`.
+
+- 1,000,000 / 1,000,000 complete-domain additions correct
+- 780,000 / 780,000 unseen test additions correct
+- 0 incorrect answers
+- 0 invalid generations
+- 100% accuracy for every carry pattern
+- 100% accuracy for every operand-length combination
+
+![Accuracy by carry pattern and operand length](assets/exhaustive_accuracy.png)
+
 ## Task representation
 
 Every complete record has 16 characters:
