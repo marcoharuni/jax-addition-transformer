@@ -1,0 +1,6 @@
+{
+  "model": {"n_layers": 1, "d_model": 12, "n_heads": 2, "n_kv_heads": 2, "d_ff": 16, "max_input_length": 9, "vocab_size": 13, "norm_type": "layernorm", "position_type": "learned", "ffn_type": "gelu", "attention_type": "mha", "use_bias": false, "tie_embeddings": true, "compute_dtype": "float32", "parameter_dtype": "float32", "norm_epsilon": 1e-5, "rope_base": 10000.0, "init_scale": 0.02},
+  "task": {"max_digits": 1},
+  "optimizer": {"name": "adamw", "peak_learning_rate": 0.001, "initial_learning_rate": 0.001, "final_learning_rate": 0.0001, "warmup_steps": 1, "total_steps": 10, "beta1": 0.9, "beta2": 0.99, "epsilon": 1e-8, "weight_decay": 0.1, "clip_global_norm": 1.0, "momentum": 0.9},
+  "training": {"seed": 42, "train_pairs": 60, "validation_pairs": 20, "test_pairs": 20, "batch_size": 8, "evaluation_batch_size": 10, "max_steps": 10, "validation_interval": 5, "logging_interval": 1, "checkpoint_interval": 5}
+}
