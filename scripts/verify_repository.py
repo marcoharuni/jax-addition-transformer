@@ -101,14 +101,26 @@ for path in ROOT.rglob("*"):
         if "forge" + "-" + "transformer" in text:
             raise SystemExit(f"stale repository name in {path}")
 
-rasters = [
+allowed_rasters = {
+    ROOT / "assets" / "training_curves.png",
+    ROOT / "assets" / "exhaustive_accuracy.png",
+}
+
+rasters = {
     path
     for suffix in ("*.png", "*.jpg", "*.jpeg")
     for path in ROOT.rglob(suffix)
-    if ".venv" not in path.parts
-]
-if rasters:
-    raise SystemExit("external raster diagrams are forbidden")
+    if ".venv" not in path.parts and ".git" not in path.parts
+}
+
+unexpected_rasters = rasters - allowed_rasters
+missing_rasters = allowed_rasters - rasters
+
+if unexpected_rasters:
+    raise SystemExit(f"unexpected raster files: {sorted(unexpected_rasters)}")
+
+if missing_rasters:
+    raise SystemExit(f"missing verified result figures: {sorted(missing_rasters)}")
 
 pyproject = (ROOT / "pyproject.toml").read_text()
 readme = (ROOT / "README.md").read_text()
@@ -121,10 +133,14 @@ code = "\n".join(cell.source for cell in notebook.cells if cell.cell_type == "co
 if "%%writefile" in code:
     raise SystemExit("clean Colab notebook must not contain %%writefile cells")
 if "from jax_addition_transformer" in code or "import jax_addition_transformer" in code:
-    raise SystemExit("clean Colab notebook must not hide its core model behind package imports")
+    raise SystemExit(
+        "clean Colab notebook must not hide its core model behind package imports"
+    )
 for marker in ("10_000_000", "train_step", "evaluate_complete_domain"):
     if marker not in code:
-        raise SystemExit(f"clean Colab notebook is missing required implementation marker: {marker}")
+        raise SystemExit(
+            f"clean Colab notebook is missing required implementation marker: {marker}"
+        )
 
 config = ExperimentConfig.load(ROOT / "configs/exact_10m_t4.json")
 model = AdditionTransformer(config.model, rngs=nnx.Rngs(params=config.training.seed))
