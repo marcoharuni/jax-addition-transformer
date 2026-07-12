@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-07-12T05:57:34.364755+00:00",
+  "python": "3.12.13",
+  "operating_system": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "jax": "0.7.2",
+  "jaxlib": "0.7.2",
+  "flax": "0.12.0",
+  "optax": "0.2.6",
+  "orbax": "0.11.28",
+  "numpy": "2.0.2",
+  "devices": [
+    "cuda:0"
+  ],
+  "device_count": 1,
+  "backend": "gpu",
+  "compute_dtype": "float16",
+  "git_commit": "9e43cd768fe63ea9b4e9b518acc44e340ba44123",
+  "configuration_hash": "94752608a5f9ce081e4f1abe6c4b9acbcb51e4e18ff2178e9986674a025ab7a6"
+}

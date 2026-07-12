@@ -1,0 +1,6 @@
+model,parameter_count,first_steps_at_50pct_em,first_steps_at_95pct_em,first_steps_at_99pct_em
+dense_0p16m,162176,400,750,750
+dense_0p64m,643840,175,250,400
+dense_2p16m,2164608,125,175,250
+dense_5p12m,5123584,100,175,175
+dense_10m,10000000,100,175,175
