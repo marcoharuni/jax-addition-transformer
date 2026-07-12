@@ -9,3 +9,6 @@ build/
 runs/*
 !runs/.gitkeep
 .ipynb_checkpoints/
+
+# Raw dense-scaling runs and checkpoints
+experiments/dense_scaling/results/
