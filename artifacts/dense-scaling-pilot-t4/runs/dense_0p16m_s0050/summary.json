@@ -1,0 +1,17 @@
+{
+  "parameter_count": 162176,
+  "steps": 50,
+  "compilation_seconds": 6.468089532999954,
+  "resume_compilation_seconds": null,
+  "steady_state_training_seconds": 1.2572831419998352,
+  "training_segment_seconds": 12.957143638000048,
+  "total_training_seconds": 12.957143638000048,
+  "best": {
+    "step": 50,
+    "greedy_exact_match": 0.00045,
+    "loss": 1.9119319915771484
+  },
+  "final_train_loss": 1.8340495824813843,
+  "final_answer_token_accuracy": 0.3642578125,
+  "evaluations": {}
+}

@@ -135,6 +135,48 @@ The notebook visibly implements:
 
 No pretrained weights, external transformer implementation, calculator call, or hidden repository import is used in the notebook's core model.
 
+## Dense scaling baseline
+
+The dense scaling study contains **120 independent NVIDIA T4 runs**:
+
+- 5 model sizes, ranging from 162,176 to exactly 10,000,000 parameters;
+- 8 independently trained token-exposure budgets;
+- 3 random seeds per model-and-budget point;
+- 40 three-seed aggregates;
+- 120 of 120 runs completed on GPU.
+
+| Parameters | First ≥50% EM | First ≥95% EM | First ≥99% EM |
+|---:|---:|---:|---:|
+| 162,176 | 400 steps | 750 steps | 750 steps |
+| 643,840 | 175 steps | 250 steps | 400 steps |
+| 2,164,608 | 125 steps | 175 steps | 250 steps |
+| 5,123,584 | 100 steps | 175 steps | 175 steps |
+| 10,000,000 | 100 steps | 175 steps | 175 steps |
+
+![Three-seed exact-match transition](assets/dense_scaling_final_exact_match.svg)
+
+Larger dense models cross the addition task's algorithmic transition with fewer token exposures. Exact match then saturates rapidly, while validation loss continues to distinguish the models.
+
+The conventional additive scaling surface,
+
+`L(N, D) = E + A(N / 1e6)^(-alpha) + B(D / 1e6)^(-beta)`,
+
+was tested across five saturation cutoffs. It was **not stably identified**. Every fitted irreducible-loss term collapsed to zero, and the exponent estimates changed substantially with the cutoff. Reporting compute-optimal exponents from this sweep would therefore be misleading.
+
+The primary scaling result is the measured **14-point empirical compute-loss frontier**:
+
+![Empirical dense compute-loss frontier](assets/dense_scaling_final_frontier.svg)
+
+Here, `D` means full-sequence token exposures from a fixed pool of 200,000 unique training pairs, including repeated examples. This is a task-specific exposure-scaling experiment, not a universal internet-scale Chinchilla law.
+
+Reproducible analysis:
+
+- [`notebooks/02_dense_scaling_laws.ipynb`](notebooks/02_dense_scaling_laws.ipynb)
+- [`artifacts/dense-scaling-final-t4/`](artifacts/dense-scaling-final-t4/)
+- [`experiments/dense_scaling/analyze_final.py`](experiments/dense_scaling/analyze_final.py)
+- [`experiments/dense_scaling/fit_final_scaling_law.py`](experiments/dense_scaling/fit_final_scaling_law.py)
+- [`experiments/dense_scaling/plot_final_results.py`](experiments/dense_scaling/plot_final_results.py)
+
 ## Local development
 
 ```bash
