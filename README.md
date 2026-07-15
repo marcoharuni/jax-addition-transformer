@@ -1,12 +1,15 @@
 # JAX Addition Transformer
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/01_build_train_exact_10m.ipynb)
+[![Open notebook 01 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/01_build_train_exact_10m.ipynb)
 
-A decoder-only transformer with exactly **10,000,000 trainable parameters**, written from scratch with JAX primitives and Flax NNX, and trained to add every ordered pair of integers from 0 through 999.
+A decoder-only transformer written from scratch with JAX primitives and Flax
+NNX, trained to add every ordered pair of integers from 0 through 999. The
+default dense model has exactly **10,000,000 trainable parameters**.
 
-## Verified result
+## Verified exact-10M dense result
 
-The default model was trained on a Google Colab NVIDIA T4 and evaluated by greedy autoregressive generation over the complete one-million-pair domain.
+The default model was trained on a Google Colab NVIDIA T4 and evaluated with
+greedy autoregressive generation over the complete one-million-pair domain.
 
 | Measurement | Result |
 |---|---:|
@@ -21,48 +24,32 @@ The default model was trained on a Google Colab NVIDIA T4 and evaluated by greed
 | Invalid generations | 0 |
 | Failures | 0 |
 
-The exhaustive evaluation took 144.31 seconds. Machine-generated measurements are stored in [`artifacts/t4-run`](artifacts/t4-run).
-
-This result is limited to the fixed domain `0..999` and the representation described below. It is not a claim about four-digit or arbitrary-length addition.
-
-## Training
-
-The model reached 100% validation exact-match accuracy by step 500 and stopped at step 750 after achieving perfect validation accuracy twice.
+The exhaustive evaluation took 144.31 seconds. Machine-generated measurements
+are stored in [`artifacts/t4-run`](artifacts/t4-run).
 
 ![Training loss, token accuracy, validation exact match, and gradient norm](assets/training_curves.png)
 
-## Exhaustive evaluation
-
-The saved checkpoint was evaluated with greedy autoregressive decoding across every ordered pair from `0 + 0` through `999 + 999`.
-
-- 1,000,000 / 1,000,000 complete-domain additions correct
-- 780,000 / 780,000 unseen test additions correct
-- 0 incorrect answers
-- 0 invalid generations
-- 100% accuracy for every carry pattern
-- 100% accuracy for every operand-length combination
-
 ![Accuracy by carry pattern and operand length](assets/exhaustive_accuracy.png)
 
-## Task representation
+This result applies only to the fixed `0..999` domain and the representation
+described below. It is not a claim about four-digit or arbitrary-length
+addition.
 
-Every complete record has 16 characters:
+## Task and model
+
+Each complete record has 16 characters:
 
 ```text
 123 + 456 = 9750
 ```
 
-The operands are zero-padded to three digits. The normal four-digit answer `0579` is reversed to `9750`, so a causal model generates the units digit first and follows the direction of carry propagation.
+Operands are zero-padded to three digits. The normal answer `0579` is reversed
+to `9750`, so the causal model generates the units digit first and follows the
+direction of carry propagation.
 
-The vocabulary contains exactly 13 characters:
-
-```text
-0 1 2 3 4 5 6 7 8 9 space + =
-```
-
-There is no padding token. Training uses shifted next-token targets, but loss is applied only to the four answer positions.
-
-## Default architecture
+The vocabulary contains the ten digits, space, `+`, and `=`. There is no
+padding token. Training uses shifted next-token targets, with loss applied only
+to the four answer positions.
 
 | Setting | Value |
 |---|---:|
@@ -72,31 +59,11 @@ There is no padding token. Training uses shifted next-token targets, but loss is
 | Head dimension | 64 |
 | FFN width | 2,480 |
 | Normalization | Pre-LayerNorm |
-| Activation | GELU |
 | Positions | Learned absolute embeddings |
 | Token/output weights | Tied |
-| Bias / dropout | None / 0 |
-| Parameter storage | FP32 |
-| T4 matrix inputs | FP16 with FP32 accumulation requested |
+| Precision | FP32 parameters, FP16 matrix inputs |
 
-Exact parameter count:
-
-```text
-attention per block     4 × 320 × 320                   =   409,600
-FFN per block           2 × 320 × 2,480                 = 1,587,200
-two LayerNorms          2 × (320 scale + 320 bias)      =     1,280
-five blocks             5 × 1,998,080                   = 9,990,400
-tied token embedding    13 × 320                        =     4,160
-position embedding      15 × 320                        =     4,800
-final LayerNorm         320 scale + 320 bias            =       640
-total                                                       10,000,000
-```
-
-The notebook asserts this count against the actual NNX parameter tree before training.
-
-## Data and optimization
-
-The complete domain contains `1,000 × 1,000 = 1,000,000` ordered pairs.
+The complete domain contains `1,000 × 1,000 = 1,000,000` ordered pairs:
 
 | Split | Pairs |
 |---|---:|
@@ -104,78 +71,80 @@ The complete domain contains `1,000 × 1,000 = 1,000,000` ordered pairs.
 | Validation | 20,000 |
 | Unseen test | 780,000 |
 
-The deterministic seed-42 split is stratified by operand lengths and carry pattern. Each training batch combines uniform examples with carry-balanced examples.
+The deterministic seed-42 split is stratified by operand lengths and carry
+pattern. Each training batch combines uniform examples with carry-balanced
+examples. Optimization uses AdamW, global-norm clipping at 1.0, and cosine
+decay from a peak learning rate of `1e-3` to `1e-4`.
 
-The optimizer is AdamW with:
+## Verified standalone ragged-dot MoE result
+
+[![Open notebook 03 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/03_moe_ragged_dot_t4.ipynb)
+
+The standalone no-drop top-2 Mixture-of-Experts transformer uses exactly two
+`jax.lax.ragged_dot` projections per MoE layer. Its 10M-active configuration
+has 17,942,400 stored parameters, a 10,006,400 active-parameter proxy, four
+experts, and expert width 1,240.
+
+A seed-42 Colab T4 run completed in 7.86 minutes and produced:
+
+| Measurement | Result |
+|---|---:|
+| Validation exact match | 20,000 / 20,000 |
+| Complete domain | 999,981 / 1,000,000 |
+| Unseen test | 779,984 / 780,000 |
+| Failures | 19 |
+| Invalid generations | 0 |
+| Exhaustive evaluation | 779.29 seconds |
+
+Verified evidence is stored in
+[`artifacts/moe-comparison-t4/seed-42`](artifacts/moe-comparison-t4/seed-42).
+This standalone result is separate from the scaling study below.
+
+## Current dense-versus-MoE scaling study
+
+The current study compares four dense models with four matched-active MoE
+models at four independently trained horizons:
 
 ```text
-peak learning rate   1e-3
-warmup               100 steps
-schedule             cosine decay
-final learning rate  1e-4
-beta1 / beta2         0.9 / 0.99
-global-norm clipping 1.0
-weight decay          0.1 on attention and FFN matrices only
+4 model sizes × 4 horizons (50, 125, 300, 750) × seed 42
 ```
 
-## Run in Colab
+This produces 16 dense runs and 16 MoE runs: 32 total independent runs. The
+dense sizes are parameter counts of approximately 0.16M, 0.64M, 2.16M, and
+10M. Each MoE model is matched to its dense reference by active-parameter
+proxy, with stored parameters reported separately. Dense and MoE runs share
+the same dataset, split, vocabulary, answer-only objective, batch size 2,048,
+optimizer schedule, parameter and compute precision, and evaluation procedure.
+Notebook 04 preserves top-2 routing and two `jax.lax.ragged_dot` projections per
+MoE layer.
 
-Open [`notebooks/01_build_train_exact_10m.ipynb`](notebooks/01_build_train_exact_10m.ipynb), select **Runtime → Change runtime type → T4 GPU**, and run the notebook from top to bottom.
+**Status: complete.** All 16 dense and 16 matched-active MoE runs finished.
+Around the task's algorithmic transition, MoE reached lower validation loss at
+comparable estimated training FLOPs, while the current ragged-dot MoE
+implementation took substantially longer in measured T4 wall-clock time. At
+high exposure, both families approached saturation. This is a single-seed,
+task-specific result rather than a universal claim about MoE scaling.
 
-The notebook visibly implements:
+## Notebooks
 
-- tokenizer and fixed-width dataset;
-- deterministic split and balanced sampler;
-- linear layers, LayerNorm, causal MHA, GELU FFN and transformer blocks;
-- answer-only loss and AdamW training;
-- training and validation curves;
-- checkpoint save and restore;
-- exhaustive evaluation over all 1,000,000 additions;
-- interactive model inference.
+| Notebook | Purpose | Colab |
+|---|---|---|
+| [`01_build_train_exact_10m.ipynb`](notebooks/01_build_train_exact_10m.ipynb) | Build, train, and exhaustively evaluate the exact-10M dense model | [Open on `main`](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/01_build_train_exact_10m.ipynb) |
+| [`02_dense_scaling_laws.ipynb`](notebooks/02_dense_scaling_laws.ipynb) | Run and analyze the current 16-coordinate dense sweep | [Open on `main`](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/02_dense_scaling_laws.ipynb) |
+| [`03_moe_ragged_dot_t4.ipynb`](notebooks/03_moe_ragged_dot_t4.ipynb) | Reproduce the verified standalone ragged-dot MoE result | [Open on `main`](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/03_moe_ragged_dot_t4.ipynb) |
+| [`04_moe_scaling_t4.ipynb`](notebooks/04_moe_scaling_t4.ipynb) | Run and analyze the current MoE sweep and compare it with dense results | [Open on `main`](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/04_moe_scaling_t4.ipynb) |
 
-No pretrained weights, external transformer implementation, calculator call, or hidden repository import is used in the notebook's core model.
+Select **Runtime → Change runtime type → T4 GPU**, then use **Runtime → Run
+all**.
 
-## Dense scaling baseline
+## Artifacts
 
-The dense scaling study contains **120 independent NVIDIA T4 runs**:
+Committed verified artifacts:
 
-- 5 model sizes, ranging from 162,176 to exactly 10,000,000 parameters;
-- 8 independently trained token-exposure budgets;
-- 3 random seeds per model-and-budget point;
-- 40 three-seed aggregates;
-- 120 of 120 runs completed on GPU.
-
-| Parameters | First ≥50% EM | First ≥95% EM | First ≥99% EM |
-|---:|---:|---:|---:|
-| 162,176 | 400 steps | 750 steps | 750 steps |
-| 643,840 | 175 steps | 250 steps | 400 steps |
-| 2,164,608 | 125 steps | 175 steps | 250 steps |
-| 5,123,584 | 100 steps | 175 steps | 175 steps |
-| 10,000,000 | 100 steps | 175 steps | 175 steps |
-
-![Three-seed exact-match transition](assets/dense_scaling_final_exact_match.svg)
-
-Larger dense models cross the addition task's algorithmic transition with fewer token exposures. Exact match then saturates rapidly, while validation loss continues to distinguish the models.
-
-The conventional additive scaling surface,
-
-`L(N, D) = E + A(N / 1e6)^(-alpha) + B(D / 1e6)^(-beta)`,
-
-was tested across five saturation cutoffs. It was **not stably identified**. Every fitted irreducible-loss term collapsed to zero, and the exponent estimates changed substantially with the cutoff. Reporting compute-optimal exponents from this sweep would therefore be misleading.
-
-The primary scaling result is the measured **14-point empirical compute-loss frontier**:
-
-![Empirical dense compute-loss frontier](assets/dense_scaling_final_frontier.svg)
-
-Here, `D` means full-sequence token exposures from a fixed pool of 200,000 unique training pairs, including repeated examples. This is a task-specific exposure-scaling experiment, not a universal internet-scale Chinchilla law.
-
-Reproducible analysis:
-
-- [`notebooks/02_dense_scaling_laws.ipynb`](notebooks/02_dense_scaling_laws.ipynb)
-- [`artifacts/dense-scaling-final-t4/`](artifacts/dense-scaling-final-t4/)
-- [`experiments/dense_scaling/analyze_final.py`](experiments/dense_scaling/analyze_final.py)
-- [`experiments/dense_scaling/fit_final_scaling_law.py`](experiments/dense_scaling/fit_final_scaling_law.py)
-- [`experiments/dense_scaling/plot_final_results.py`](experiments/dense_scaling/plot_final_results.py)
+```text
+artifacts/t4-run/                         exact-10M dense result
+artifacts/moe-comparison-t4/seed-42/      standalone ragged-dot MoE result
+```
 
 ## Local development
 
@@ -186,23 +155,12 @@ uv run ruff check .
 uv run jat-inspect --config configs/exact_10m_t4.json
 ```
 
-The tested CPU suite contains 33 tests covering formatting, tokenization, carries, splitting, sampling, attention causality, parameter counting, loss masking, optimization, checkpointing, resume behavior and notebook validity.
-
-## Artifacts
-
-Committed run artifacts:
-
-```text
-artifacts/t4-run/history.json
-artifacts/t4-run/results.json
-artifacts/t4-run/failures.csv
-```
-
-The trained checkpoint is approximately 40 MB and should be published as a GitHub Release asset rather than committed to the repository.
-
 ## Scope
 
-This is an arithmetic language-model experiment, not a general chatbot. Its verified claim is exact greedy generation across the complete fixed three-digit addition domain represented by this notebook.
+This is an arithmetic language-model experiment, not a general chatbot. Its
+strongest verified claim is exact greedy generation across the complete fixed
+three-digit addition domain represented by notebook 01. The completed dense-versus-MoE comparison is a single-seed,
+task-specific T4 study and does not establish universal scaling laws.
 
 ## License and author
 

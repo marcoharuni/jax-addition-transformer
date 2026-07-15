@@ -30,7 +30,9 @@ def inspect_main() -> None:
     _config_argument(parser)
     args = parser.parse_args()
     config = ExperimentConfig.load(args.config)
-    model = AdditionTransformer(config.model, rngs=nnx.Rngs(params=config.training.seed))
+    model = AdditionTransformer(
+        config.model, rngs=nnx.Rngs(params=config.training.resolved_initialization_seed)
+    )
     total = assert_parameter_count(model, 10_000_000 if config.model.is_exact_default else None)
     print("Component                         Parameters")
     print("-------------------------------- ----------")
@@ -53,7 +55,9 @@ def train_main() -> None:
 
 def _restore_model(run_dir: Path, checkpoint: str = "best"):
     config = ExperimentConfig.load(run_dir / "config.json")
-    model = AdditionTransformer(config.model, rngs=nnx.Rngs(params=config.training.seed))
+    model = AdditionTransformer(
+        config.model, rngs=nnx.Rngs(params=config.training.resolved_initialization_seed)
+    )
     graphdef, params = nnx.split(model, nnx.Param)
     optimizer, _ = make_optimizer(config.optimizer, params)
     optimizer_state = optimizer.init(params)
@@ -74,7 +78,7 @@ def eval_main() -> None:
     run_dir = Path(args.run_dir)
     model, config = _restore_model(run_dir, args.checkpoint)
     split = create_split(
-        config.training.seed,
+        config.training.resolved_split_seed,
         config.training.train_pairs,
         config.training.validation_pairs,
         10**config.task.max_digits,

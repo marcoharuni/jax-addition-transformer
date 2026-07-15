@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -11,6 +12,7 @@ from flax import nnx
 
 from jax_addition_transformer.config import ExperimentConfig
 from jax_addition_transformer.model import AdditionTransformer, assert_parameter_count
+from jax_addition_transformer.scaling import canonical_fingerprint
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -24,6 +26,7 @@ SOURCE_NAMES = [
     "positional",
     "attention",
     "ffn",
+    "moe",
     "model",
     "losses",
     "optimizers",
@@ -33,6 +36,7 @@ SOURCE_NAMES = [
     "evaluation",
     "checkpointing",
     "reporting",
+    "scaling",
     "cli",
 ]
 
@@ -48,6 +52,13 @@ TEST_NAMES = [
     "positions",
     "attention",
     "ffn",
+    "moe",
+    "moe_config",
+    "moe_training",
+    "moe_infrastructure",
+    "moe_scaling",
+    "dense_moe_scaling",
+    "scaling_worker",
     "model",
     "parameter_count",
     "loss_mask",
@@ -72,13 +83,43 @@ required = [
     "configs/exact_10m_t4.json",
     "docs/design.md",
     "notebooks/01_build_train_exact_10m.ipynb",
+    "notebooks/02_dense_scaling_laws.ipynb",
+    "notebooks/03_moe_ragged_dot_t4.ipynb",
+    "notebooks/04_moe_scaling_t4.ipynb",
     "runs/.gitkeep",
     "scripts/validate_notebook.py",
     "scripts/verify_repository.py",
+    "scripts/scaling_worker.py",
     "artifacts/t4-run/history.json",
     "artifacts/t4-run/results.json",
     "artifacts/t4-run/failures.csv",
     "artifacts/t4-run/README.md",
+    "artifacts/moe-comparison-t4/README.md",
+    "artifacts/moe-comparison-t4/seed-42/config.json",
+    "artifacts/moe-comparison-t4/seed-42/history.json",
+    "artifacts/moe-comparison-t4/seed-42/results.json",
+    "artifacts/moe-comparison-t4/seed-42/failures.csv",
+    "artifacts/moe-comparison-t4/seed-42/SHA256SUMS.txt",
+    "experiments/moe_scaling/MOE_SCALING.md",
+    "experiments/moe_scaling/configs.py",
+    "experiments/moe_scaling/run_grid.py",
+    "experiments/moe_scaling/analyze_results.py",
+    "experiments/moe_scaling/fit_scaling_law.py",
+    "experiments/moe_scaling/plot_results.py",
+    "experiments/moe_scaling/compare_dense_moe.py",
+    "experiments/moe_scaling/final_manifest.json",
+    "experiments/moe_scaling/architecture_summary.json",
+    "experiments/dense_scaling/configs/final_models/dense_5p12m.json",
+    "experiments/moe_scaling/configs/final_models/moe_active_5p12m.json",
+    "experiments/dense_moe_scaling/protocol.json",
+    "experiments/dense_moe_scaling/manifest.json",
+    "experiments/dense_moe_scaling/dense_manifest.json",
+    "experiments/dense_moe_scaling/moe_manifest.json",
+    "experiments/dense_moe_scaling/generate_configs.py",
+    "experiments/dense_moe_scaling/run_grid.py",
+    "experiments/dense_moe_scaling/analyze.py",
+    "experiments/dense_moe_scaling/compare.py",
+    "experiments/dense_moe_scaling/README.md",
 ]
 required += [f"src/jax_addition_transformer/{name}.py" for name in SOURCE_NAMES]
 required += [f"tests/test_{name}.py" for name in TEST_NAMES]
@@ -133,9 +174,7 @@ code = "\n".join(cell.source for cell in notebook.cells if cell.cell_type == "co
 if "%%writefile" in code:
     raise SystemExit("clean Colab notebook must not contain %%writefile cells")
 if "from jax_addition_transformer" in code or "import jax_addition_transformer" in code:
-    raise SystemExit(
-        "clean Colab notebook must not hide its core model behind package imports"
-    )
+    raise SystemExit("clean Colab notebook must not hide its core model behind package imports")
 for marker in ("10_000_000", "train_step", "evaluate_complete_domain"):
     if marker not in code:
         raise SystemExit(
@@ -155,4 +194,68 @@ subprocess.run(
 if "1,000,000 / 1,000,000" not in readme:
     raise SystemExit("README is missing the verified exhaustive result")
 
-print("Repository verification passed; clean notebook and exact 10M model are present.")
+moe_result = json.loads((ROOT / "artifacts/moe-comparison-t4/seed-42/results.json").read_text())
+if moe_result["overall"]["correct"] != 999_981:
+    raise SystemExit("standalone MoE result does not match the verified seed-42 run")
+manifest = json.loads((ROOT / "experiments/moe_scaling/final_manifest.json").read_text())
+if len(manifest) != 120 or len({row["run_id"] for row in manifest}) != 120:
+    raise SystemExit("final MoE scaling manifest must contain 120 unique runs")
+
+scaling_root = ROOT / "experiments" / "dense_moe_scaling"
+scaling_dense = json.loads((scaling_root / "dense_manifest.json").read_text())
+scaling_moe = json.loads((scaling_root / "moe_manifest.json").read_text())
+scaling_protocol = json.loads((scaling_root / "protocol.json").read_text())
+protocol_claim = scaling_protocol.pop("protocol_fingerprint", None)
+if protocol_claim != canonical_fingerprint(scaling_protocol):
+    raise SystemExit("dense/MoE scaling protocol fingerprint is invalid")
+if scaling_protocol["study"] != {
+    "architectures": ["dense", "moe"],
+    "model_sizes_per_architecture": 4,
+    "independent_horizons": [50, 125, 300, 750],
+    "runs_per_architecture": 16,
+    "fixed_seed": 42,
+}:
+    raise SystemExit("dense/MoE scaling study dimensions are invalid")
+if len(scaling_dense) != 16 or len(scaling_moe) != 16:
+    raise SystemExit("dense/MoE scaling manifests must contain 16 dense and 16 MoE runs")
+all_scaling_rows = scaling_dense + scaling_moe
+if len({row["run_id"] for row in all_scaling_rows}) != 32:
+    raise SystemExit("dense/MoE scaling run IDs must be unique")
+if any("seed42" in row["run_id"] or "v2" in row["run_id"] for row in all_scaling_rows):
+    raise SystemExit("canonical dense/MoE scaling run IDs must not contain seed42 or v2")
+if {row["model_id"] for row in scaling_dense} != {
+    "dense_0p16m",
+    "dense_0p64m",
+    "dense_2p16m",
+    "dense_10m",
+}:
+    raise SystemExit("canonical dense scaling models are invalid")
+if {row["model_id"] for row in scaling_moe} != {
+    "moe_active_0p16m",
+    "moe_active_0p64m",
+    "moe_active_2p16m",
+    "moe_active_10m",
+}:
+    raise SystemExit("canonical MoE scaling models are invalid")
+if {row["horizon_steps"] for row in all_scaling_rows} != {50, 125, 300, 750}:
+    raise SystemExit("dense/MoE scaling horizons are invalid")
+if {
+    (row["split_seed"], row["initialization_seed"], row["sampler_seed"])
+    for row in all_scaling_rows
+} != {(42, 42, 42)}:
+    raise SystemExit("dense/MoE scaling must bind all three random streams to 42")
+if {row["protocol_fingerprint"] for row in all_scaling_rows} != {protocol_claim}:
+    raise SystemExit("dense/MoE scaling manifests are not bound to protocol.json")
+for architecture, rows in (("dense", scaling_dense), ("moe", scaling_moe)):
+    config_paths = list((scaling_root / "configs" / architecture).glob("*.json"))
+    if len(config_paths) != 16:
+        raise SystemExit(f"dense/MoE scaling {architecture} config count is not 16")
+    for row in rows:
+        generated = ExperimentConfig.load(ROOT / row["config"])
+        if generated.fingerprint != row["config_fingerprint"]:
+            raise SystemExit(f"dense/MoE scaling config fingerprint mismatch: {row['run_id']}")
+
+print(
+    "Repository verification passed; exact dense model, standalone MoE evidence, "
+    "historical 120-run workflows, and the 16+16 dense/MoE workflow are present."
+)

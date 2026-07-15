@@ -16,9 +16,10 @@ from .checkpointing import capture_environment, restore_checkpoint, save_checkpo
 from .config import ExperimentConfig
 from .data import create_split
 from .losses import masked_cross_entropy
-from .model import AdditionTransformer, assert_parameter_count
+from .model import AdditionTransformer, active_parameter_proxy, assert_parameter_count
 from .optimizers import make_optimizer
 from .sampling import HybridSampler
+from .scaling import build_normalized_result
 from .evaluation import evaluate_ids
 
 
@@ -39,10 +40,24 @@ def create_train_step(graphdef, optimizer):
     def train_step(params, optimizer_state, inputs, targets):
         def objective(candidate):
             model = nnx.merge(graphdef, candidate)
-            loss, accuracy = masked_cross_entropy(model(inputs), targets)
-            return loss, accuracy
+            logits, auxiliary = model(inputs, return_aux=True)
+            language_model_loss, accuracy = masked_cross_entropy(logits, targets)
+            load_balance = auxiliary["load_balancing_loss"]
+            router_z = auxiliary["router_z_loss"]
+            weighted_load_balance = model.config.load_balance_loss_coefficient * load_balance
+            weighted_router_z = model.config.router_z_loss_coefficient * router_z
+            total = language_model_loss + weighted_load_balance + weighted_router_z
+            return total, {
+                "answer_token_accuracy": accuracy,
+                "language_model_loss": language_model_loss,
+                "load_balancing_loss": load_balance,
+                "router_z_loss": router_z,
+                "weighted_load_balancing_loss": weighted_load_balance,
+                "weighted_router_z_loss": weighted_router_z,
+                "routing_metrics": auxiliary["routing_metrics"],
+            }
 
-        (loss, accuracy), gradients = jax.value_and_grad(objective, has_aux=True)(params)
+        (loss, objective_metrics), gradients = jax.value_and_grad(objective, has_aux=True)(params)
         gradient_norm = optax.global_norm(gradients)
         finite = jnp.isfinite(loss) & tree_all_finite(gradients)
         updates, optimizer_state = optimizer.update(gradients, optimizer_state, params)
@@ -59,13 +74,26 @@ def create_train_step(graphdef, optimizer):
             optimizer_state,
             {
                 "loss": loss,
-                "answer_token_accuracy": accuracy,
+                "total_optimized_loss": loss,
                 "gradient_global_norm": gradient_norm,
                 "finite": finite,
+                **objective_metrics,
             },
         )
 
     return train_step
+
+
+def _json_ready(value):
+    """Convert device-returned metric PyTrees to JSON-safe Python values."""
+    if isinstance(value, dict):
+        return {key: _json_ready(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_json_ready(item) for item in value]
+    array = jnp.asarray(value)
+    if array.ndim == 0:
+        return array.item()
+    return array.tolist()
 
 
 def train(
@@ -91,13 +119,14 @@ def train(
     else:
         config.save(config_path)
     split = create_split(
-        config.training.seed,
+        config.training.resolved_split_seed,
         config.training.train_pairs,
         config.training.validation_pairs,
         10**config.task.max_digits,
     )
     split_metadata = {
         "seed": split.seed,
+        "split_seed": config.training.resolved_split_seed,
         "train_size": len(split.train),
         "validation_size": len(split.validation),
         "test_size": len(split.test),
@@ -109,16 +138,23 @@ def train(
         "fingerprint": split.fingerprint,
     }
     (run_dir / "split_metadata.json").write_text(json.dumps(split_metadata, indent=2) + "\n")
-    model = AdditionTransformer(config.model, rngs=nnx.Rngs(params=config.training.seed))
+    model = AdditionTransformer(
+        config.model,
+        rngs=nnx.Rngs(params=config.training.resolved_initialization_seed),
+    )
     parameter_count = assert_parameter_count(
         model, 10_000_000 if config.model.is_exact_default else None
     )
+    active_parameters = active_parameter_proxy(model)
     graphdef, params = nnx.split(model, nnx.Param)
     optimizer, schedule = make_optimizer(config.optimizer, params)
     optimizer_state = optimizer.init(params)
     step_fn = create_train_step(graphdef, optimizer)
     sampler = HybridSampler.create(
-        split.train, config.training.batch_size, config.training.seed, 10**config.task.max_digits
+        split.train,
+        config.training.batch_size,
+        config.training.resolved_sampler_seed,
+        10**config.task.max_digits,
     )
     environment = capture_environment(config)
     (run_dir / "environment.json").write_text(json.dumps(environment, indent=2) + "\n")
@@ -139,18 +175,31 @@ def train(
         history_path.write_text("")
     started = time.perf_counter()
     compile_seconds = None
+    compiled_step = step_fn
+    if start_step < total_steps:
+        dummy = jnp.zeros(
+            (config.training.batch_size, config.model.max_input_length),
+            dtype=jnp.int32,
+        )
+        compilation_started = time.perf_counter()
+        compiled_step = step_fn.lower(
+            params,
+            optimizer_state,
+            dummy,
+            dummy,
+        ).compile()
+        compile_seconds = time.perf_counter() - compilation_started
     step_durations = []
+    validation_seconds = 0.0
     for step in range(start_step + 1, total_steps + 1):
         inputs, targets = sampler.sample_batch(config.task.max_digits)
         before = time.perf_counter()
-        params, optimizer_state, metrics = step_fn(
+        params, optimizer_state, metrics = compiled_step(
             params, optimizer_state, jnp.asarray(inputs), jnp.asarray(targets)
         )
         jax.block_until_ready(metrics["loss"])
         duration = time.perf_counter() - before
         step_durations.append(duration)
-        if compile_seconds is None:
-            compile_seconds = duration
         checkpoint_interval = 1 if smoke_steps is not None else config.training.checkpoint_interval
         checkpoint_due = step % checkpoint_interval == 0
         validation_due = smoke_steps is None and step % config.training.validation_interval == 0
@@ -163,7 +212,7 @@ def train(
         )
         if not should_record:
             continue
-        host = {name: float(value) for name, value in jax.device_get(metrics).items()}
+        host = _json_ready(jax.device_get(metrics))
         if not bool(host["finite"]):
             raise FloatingPointError(f"non-finite loss, gradients, or parameters at step {step}")
         record = {
@@ -179,12 +228,14 @@ def train(
         save_as_best = False
         if validation_due:
             validation_model = nnx.merge(graphdef, params)
+            validation_started = time.perf_counter()
             validation, _ = evaluate_ids(
                 validation_model,
                 split.validation,
                 config.training.evaluation_batch_size,
                 config.task.max_digits,
             )
+            validation_seconds += time.perf_counter() - validation_started
             candidate = {
                 "step": step,
                 "greedy_exact_match": validation["greedy_exact_match"],
@@ -216,6 +267,10 @@ def train(
                     "best": best,
                     "history": history,
                     "config_fingerprint": config.fingerprint,
+                    "protocol_fingerprint": (
+                        config.scaling.protocol_fingerprint if config.scaling else None
+                    ),
+                    "run_id": config.scaling.run_id if config.scaling else None,
                 },
             )
         if checkpoint_due or step == total_steps:
@@ -229,6 +284,10 @@ def train(
                     "best": best,
                     "history": history,
                     "config_fingerprint": config.fingerprint,
+                    "protocol_fingerprint": (
+                        config.scaling.protocol_fingerprint if config.scaling else None
+                    ),
+                    "run_id": config.scaling.run_id if config.scaling else None,
                 },
             )
     previous_summary = {}
@@ -236,21 +295,73 @@ def train(
         previous_summary = json.loads((run_dir / "summary.json").read_text())
     segment_seconds = time.perf_counter() - started
     steady_state_seconds = sum(step_durations[1:]) if len(step_durations) > 1 else 0.0
+    training_step_seconds = sum(step_durations)
+    examples_seen = total_steps * config.training.batch_size
+    sequence_tokens_seen = examples_seen * config.model.max_input_length
+    answer_tokens_seen = examples_seen * config.task.answer_digits
+    final_record = history[-1] if history else {}
     summary = {
+        "schema_version": "training-summary-v2" if config.scaling else "training-summary-v1",
+        "run_id": config.scaling.run_id if config.scaling else None,
+        "protocol_fingerprint": (config.scaling.protocol_fingerprint if config.scaling else None),
+        "config_fingerprint": config.fingerprint,
+        "architecture": config.model.architecture,
         "parameter_count": parameter_count,
+        "total_parameter_count": parameter_count,
+        "active_parameter_proxy": active_parameters,
+        "num_experts": config.model.num_experts,
+        "top_k": config.model.top_k,
+        "expert_d_ff": config.model.expert_d_ff,
+        "load_balance_loss_coefficient": config.model.load_balance_loss_coefficient,
+        "router_z_loss_coefficient": config.model.router_z_loss_coefficient,
+        "seed": config.training.seed,
+        "split_seed": config.training.resolved_split_seed,
+        "initialization_seed": config.training.resolved_initialization_seed,
+        "sampler_seed": config.training.resolved_sampler_seed,
         "steps": total_steps,
+        "examples_seen": examples_seen,
+        "sequence_tokens_seen": sequence_tokens_seen,
+        "input_tokens_seen": sequence_tokens_seen,
+        "answer_tokens_seen": answer_tokens_seen,
+        "repetition_ratio": examples_seen / config.training.train_pairs,
+        "estimated_training_flops": 6 * active_parameters * sequence_tokens_seen,
         "compilation_seconds": previous_summary.get("compilation_seconds", compile_seconds),
         "resume_compilation_seconds": compile_seconds if resume else None,
+        "total_compilation_seconds": previous_summary.get(
+            "total_compilation_seconds",
+            previous_summary.get("compilation_seconds", 0.0),
+        )
+        + (compile_seconds or 0.0),
         "steady_state_training_seconds": previous_summary.get("steady_state_training_seconds", 0.0)
         + steady_state_seconds,
+        "training_step_seconds": previous_summary.get("training_step_seconds", 0.0)
+        + training_step_seconds,
         "training_segment_seconds": segment_seconds,
         "total_training_seconds": previous_summary.get("total_training_seconds", 0.0)
         + segment_seconds,
+        "validation_seconds": previous_summary.get("validation_seconds", 0.0) + validation_seconds,
         "best": best,
-        "final_train_loss": history[-1]["loss"] if history else "not evaluated",
-        "final_answer_token_accuracy": history[-1]["answer_token_accuracy"]
-        if history
-        else "not evaluated",
+        "validation_loss": best.get("loss") if best else "not evaluated",
+        "validation_answer_cross_entropy": best.get("loss") if best else "not evaluated",
+        "greedy_exact_match": best.get("greedy_exact_match") if best else "not evaluated",
+        "final_train_loss": final_record.get(
+            "language_model_loss", final_record.get("loss", "not evaluated")
+        ),
+        "final_train_language_model_loss": final_record.get(
+            "language_model_loss", final_record.get("loss", "not evaluated")
+        ),
+        "final_load_balancing_loss": final_record.get("load_balancing_loss", "not evaluated"),
+        "final_router_z_loss": final_record.get("router_z_loss", "not evaluated"),
+        "final_weighted_load_balancing_loss": final_record.get(
+            "weighted_load_balancing_loss", "not evaluated"
+        ),
+        "final_weighted_router_z_loss": final_record.get("weighted_router_z_loss", "not evaluated"),
+        "final_total_optimized_loss": final_record.get("total_optimized_loss", "not evaluated"),
+        "final_answer_token_accuracy": final_record.get("answer_token_accuracy", "not evaluated"),
+        "routing_metrics": final_record.get("routing_metrics", []),
+        "backend": environment["backend"],
+        "jax_version": environment["jax"],
+        "git_commit": environment["git_commit"],
         "evaluations": previous_summary.get("evaluations", {}),
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
@@ -262,4 +373,7 @@ def train(
         ("sample_predictions.txt", "No predictions evaluated yet.\n"),
     ):
         (run_dir / name).write_text(content)
+    if config.scaling is not None:
+        result = build_normalized_result(config, summary, environment, split_metadata)
+        (run_dir / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     return summary

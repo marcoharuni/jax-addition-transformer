@@ -1,6 +1,13 @@
 """From-scratch arithmetic transformer built with JAX and Flax NNX."""
 
-from .config import ExperimentConfig, ModelConfig, OptimizerConfig, TaskConfig, TrainingConfig
+from .config import (
+    ExperimentConfig,
+    ModelConfig,
+    OptimizerConfig,
+    ScalingMetadataConfig,
+    TaskConfig,
+    TrainingConfig,
+)
 from .model import AdditionTransformer
 
 __all__ = [
@@ -8,6 +15,7 @@ __all__ = [
     "ExperimentConfig",
     "ModelConfig",
     "OptimizerConfig",
+    "ScalingMetadataConfig",
     "TaskConfig",
     "TrainingConfig",
 ]

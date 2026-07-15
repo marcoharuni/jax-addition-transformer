@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "seed": 42,
+  "model": {
+    "layers": 5,
+    "width": 320,
+    "heads": 5,
+    "experts": 4,
+    "top_k": 2,
+    "expert_width": 1240
+  },
+  "training": {
+    "batch_size": 2048,
+    "max_steps": 175,
+    "warmup_steps": 17,
+    "peak_learning_rate": 0.001,
+    "final_learning_rate": 0.0001
+  },
+  "versions": {
+    "jax": "0.7.2",
+    "flax": "0.12.0",
+    "optax": "0.2.6"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "protocol_version": "dense-moe-scaling-v2",
+  "result_schema_version": "scaling-result-v2",
+  "study": {
+    "architectures": [
+      "dense",
+      "moe"
+    ],
+    "model_sizes_per_architecture": 4,
+    "independent_horizons": [
+      50,
+      125,
+      300,
+      750
+    ],
+    "runs_per_architecture": 16,
+    "fixed_seed": 42
+  },
+  "seeds": {
+    "split": 42,
+    "initialization": 42,
+    "sampler": 42
+  },
+  "dataset": {
+    "domain": "all ordered pairs (a, b) with 0 <= a,b <= 999",
+    "pair_id": "1000 * a + b",
+    "split_sizes": {
+      "train": 200000,
+      "validation": 20000,
+      "test": 780000
+    },
+    "stratification": "operand lengths and carry bits ordered units-tens-hundreds; deterministic largest-remainder allocation within strata",
+    "training_sampler": "50% uniform over the fixed train pool and 50% uniform over non-empty train strata, with replacement"
+  },
+  "representation": {
+    "vocabulary": "0123456789 +=",
+    "vocabulary_size": 13,
+    "full_record_tokens": 16,
+    "model_input_tokens": 15,
+    "prompt_tokens": 12,
+    "supervised_answer_tokens": 4,
+    "answer": "zero-padded four-digit sum in reverse digit order",
+    "loss_mask": "last four next-token target positions only"
+  },
+  "batching": {
+    "training_batch_size": 2048,
+    "evaluation_batch_size": 4000
+  },
+  "objective": {
+    "formula": "answer_cross_entropy + 0.01 * load_balancing_loss + 0.001 * router_z_loss",
+    "dense_router_losses": "defined as exact zeros",
+    "validation_selection": "maximum greedy exact match, then minimum validation answer cross-entropy",
+    "reporting": "validation answer cross-entropy is never combined with auxiliaries"
+  },
+  "optimizer": {
+    "name": "adamw",
+    "beta1": 0.9,
+    "beta2": 0.99,
+    "epsilon": 1e-08,
+    "global_norm_clip": 1.0,
+    "weight_decay": 0.1,
+    "decayed_parameters": "attention and FFN matrix kernels",
+    "excluded_from_weight_decay": [
+      "embeddings",
+      "normalization parameters",
+      "biases",
+      "MoE router kernels"
+    ],
+    "schedule": {
+      "kind": "linear-warmup cosine-decay",
+      "initial_learning_rate": 0.0,
+      "peak_learning_rate": 0.001,
+      "final_learning_rate": 0.0001,
+      "warmup_steps": "floor(horizon / 10), at least one",
+      "end": "final learning rate is used by the horizon's last optimizer update"
+    }
+  },
+  "precision": {
+    "parameters": "float32",
+    "matrix_operands": "float16",
+    "matrix_accumulation": "float32",
+    "normalization": "float32",
+    "router_logits": "float32",
+    "output_logits_and_loss": "float32"
+  },
+  "initialization": {
+    "distribution": "independent Normal(0, 0.02^2) matrix parameters",
+    "biases": "zeros when present",
+    "implementation": "shared package modules for both architectures"
+  },
+  "rematerialization": {
+    "transformer_blocks": true,
+    "policy": "jax.checkpoint applied to every dense and MoE transformer block"
+  },
+  "evaluation": {
+    "during_training": "one endpoint validation over the fixed 20,000-pair split",
+    "metrics": [
+      "teacher-forced answer cross-entropy",
+      "answer-token accuracy",
+      "greedy exact match",
+      "invalid greedy generations"
+    ],
+    "decoding": "greedy autoregressive generation"
+  },
+  "checkpointing": {
+    "latest_interval_steps": "min(50, horizon)",
+    "best": "saved at endpoint validation",
+    "latest": "saved at every interval and at the endpoint",
+    "contents": [
+      "parameters",
+      "optimizer state",
+      "sampler state",
+      "history"
+    ],
+    "retention": "best and latest checkpoints are mandatory completed-run artifacts"
+  },
+  "accounting": {
+    "examples_seen": "horizon * 2048",
+    "input_exposure": "examples_seen * 15",
+    "supervised_exposure": "examples_seen * 4",
+    "training_pool_repetition_ratio": "examples_seen / 200000",
+    "estimated_flops": "6 * active_parameter_proxy * input_exposure",
+    "flop_exclusions": [
+      "MoE routing/sorting/dispatch/scatter",
+      "rematerialization recomputation",
+      "hardware and kernel efficiency"
+    ]
+  },
+  "output_roots": {
+    "dense": "scaling/dense",
+    "moe": "scaling/moe",
+    "comparison": "scaling/comparison"
+  },
+  "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c"
+}

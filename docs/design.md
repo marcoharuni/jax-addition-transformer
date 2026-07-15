@@ -47,3 +47,84 @@ The schedule linearly warms to the peak and then follows cosine decay. AdamW mom
 Teacher forcing supplies correct preceding output digits, so token accuracy measures conditional next-token predictions. Greedy exact match starts with only the 12-token prompt, repeatedly runs the transformer, and inserts argmax tokens into a fixed 15-position buffer. It is stricter: all four digits must be valid and correct. Initial zeros in future buffer slots are not padding; the causal mask makes them invisible until their positions become current.
 
 Evaluation separately measures validation, the 780,000 unseen pairs, and all one million pairs. It groups exact outcomes by operand-length pair, units-to-hundreds carry string, and answer length; checks swapped-input consistency; and records every invalid or incorrect generation.
+
+## Top-2 ragged-dot MoE
+
+The MoE architecture preserves the dense attention stack and replaces each
+feed-forward sublayer with four experts. A float32 linear router produces
+probabilities over experts for every flattened token. The top two experts are
+selected, their probabilities are renormalized, and the resulting assignments
+are stably sorted by expert ID. `jax.lax.ragged_dot` then evaluates the grouped
+up projection, GELU, and grouped down projection without padding expert groups
+to a fixed capacity. Weighted outputs are scatter-added back to the original
+token order. Every token receives two routes; no assignment is dropped.
+
+The auxiliary objective is
+
+```text
+L_total = L_answer + 1e-2 L_balance + 1e-3 L_z.
+```
+
+`L_balance` multiplies the mean router probability and all-top-k assignment
+fraction for each expert, then sums and scales by the number of experts.
+`L_z` is the mean squared log-normalizer of the float32 router logits. Final
+reports retain answer loss, both unweighted auxiliary losses, router entropy,
+per-expert assignment fractions, load coefficient of variation, and
+maximum-to-mean load ratio.
+
+## Matched-active scaling rule
+
+For a dense FFN width `F` and top-k value `k=2`, each expert uses width `F/k`.
+The selected expert matrices therefore match the dense FFN matrix work:
+
+```text
+2 dense projections × D × F
+=
+k selected experts × 2 projections × D × (F/k).
+```
+
+All routers are active, so the MoE active-parameter proxy is slightly larger
+than the dense parameter count by `layers × D × experts`. Both the exact active
+proxy and the larger stored total are reported. The approximate training-compute
+axis uses `6 × active parameters × sequence tokens`; routing, sorting, dispatch,
+scatter-add, and hardware efficiency are intentionally excluded from that
+proxy and captured separately by measured T4 wall-clock time.
+
+## Dense-versus-MoE scaling protocol
+
+The final comparison protocol is frozen in
+`experiments/dense_moe_scaling/protocol.json`. It uses four dense models
+(`dense_0p16m`, `dense_0p64m`, `dense_2p16m`, and `dense_10m`) and their four
+matched-active MoE models at four independent horizons: 50, 125, 300, and 750
+updates. The 5.12M definitions remain available outside this canonical study.
+Split, parameter-initialization, and sampler seeds are distinct recorded fields
+even though all three are fixed to 42 in this study.
+
+Every horizon is initialized from scratch and has its own warmup-cosine
+schedule. The v2 schedule maps optimizer counts `0..horizon-1` to the complete
+schedule, so the final update uses the requested final learning rate. Both
+dense and MoE blocks use `jax.checkpoint`; rematerialization work is excluded
+from the reported `6 × N_active × D` proxy and is reflected in timing.
+
+The optimized expression is shared:
+
+```text
+L_total = L_answer + 1e-2 L_balance + 1e-3 L_z.
+```
+
+Dense blocks expose exact-zero router losses, while MoE blocks expose their
+measured router losses. The normalized result never conflates auxiliary terms
+with validation answer cross-entropy. AdamW decay covers attention and FFN
+matrix kernels, including expert matrices, but explicitly excludes router
+kernels.
+
+Completed-run acceptance is content-based rather than step-count-based. The
+runner verifies the protocol and full configuration fingerprints, run identity,
+fixed split fingerprint, exact endpoint, normalized schema, histories,
+environment metadata, and complete best/latest Orbax checkpoints. The three
+versioned result roots cannot be confused with the historical result roots.
+
+With one observation per coordinate, sampling uncertainty is not estimable.
+V2 analysis represents it as JSON `null` / CSV empty with status
+`unavailable_single_seed`; zero is not used as a stand-in and sample standard
+deviation is not calculated.

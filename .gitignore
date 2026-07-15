@@ -12,3 +12,10 @@ runs/*
 
 # Raw dense-scaling runs and checkpoints
 experiments/dense_scaling/results/
+
+# Raw MoE scaling runs and checkpoints
+experiments/moe_scaling/results/
+
+# Local Colab/run archives
+*.zip
+*.pkl

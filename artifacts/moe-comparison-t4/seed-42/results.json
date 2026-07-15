@@ -1,0 +1,52 @@
+{
+  "stored_parameter_count": 17942400,
+  "active_parameter_proxy": 10006400,
+  "checkpoint_step": 175,
+  "evaluation_seconds": 779.2914710560001,
+  "overall": {
+    "correct": 999981,
+    "total": 1000000,
+    "exact_match": 0.999981,
+    "failures": 19,
+    "invalid_generations": 0
+  },
+  "splits": {
+    "train": {
+      "correct": 199997,
+      "total": 200000,
+      "exact_match": 0.999985
+    },
+    "validation": {
+      "correct": 20000,
+      "total": 20000,
+      "exact_match": 1.0
+    },
+    "test": {
+      "correct": 779984,
+      "total": 780000,
+      "exact_match": 0.9999794871794871
+    }
+  },
+  "carry_patterns": {
+    "000": 1.0,
+    "001": 1.0,
+    "010": 1.0,
+    "011": 0.9999706152433425,
+    "100": 1.0,
+    "101": 1.0,
+    "110": 1.0,
+    "111": 0.9998898071625344
+  },
+  "operand_lengths": {
+    "1\u00d71": 1.0,
+    "1\u00d72": 1.0,
+    "1\u00d73": 1.0,
+    "2\u00d71": 1.0,
+    "2\u00d72": 1.0,
+    "2\u00d73": 1.0,
+    "3\u00d71": 1.0,
+    "3\u00d72": 1.0,
+    "3\u00d73": 0.9999765432098765
+  },
+  "commutativity_consistency": 0.999982
+}

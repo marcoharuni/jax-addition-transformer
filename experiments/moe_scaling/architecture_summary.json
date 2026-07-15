@@ -1,0 +1,98 @@
+{
+  "model_count": 5,
+  "run_count": 120,
+  "step_budgets": [
+    50,
+    75,
+    100,
+    125,
+    175,
+    250,
+    400,
+    750
+  ],
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "num_experts": 4,
+  "top_k": 2,
+  "architectures": [
+    {
+      "model": "moe_active_0p16m",
+      "dense_reference": "dense_0p16m",
+      "dense_parameter_count": 162176,
+      "total_parameter_count": 289664,
+      "active_parameter_proxy": 162688,
+      "active_overhead_parameters": 512,
+      "active_overhead_fraction": 0.0031570639305445935,
+      "n_layers": 2,
+      "d_model": 64,
+      "dense_d_ff": 496,
+      "expert_d_ff": 248,
+      "num_experts": 4,
+      "top_k": 2
+    },
+    {
+      "model": "moe_active_0p64m",
+      "dense_reference": "dense_0p64m",
+      "dense_parameter_count": 643840,
+      "total_parameter_count": 1152768,
+      "active_parameter_proxy": 644864,
+      "active_overhead_parameters": 1024,
+      "active_overhead_fraction": 0.0015904572564612327,
+      "n_layers": 2,
+      "d_model": 128,
+      "dense_d_ff": 992,
+      "expert_d_ff": 496,
+      "num_experts": 4,
+      "top_k": 2
+    },
+    {
+      "model": "moe_active_2p16m",
+      "dense_reference": "dense_2p16m",
+      "dense_parameter_count": 2164608,
+      "total_parameter_count": 3881088,
+      "active_parameter_proxy": 2166912,
+      "active_overhead_parameters": 2304,
+      "active_overhead_fraction": 0.0010643959552953698,
+      "n_layers": 3,
+      "d_model": 192,
+      "dense_d_ff": 1488,
+      "expert_d_ff": 744,
+      "num_experts": 4,
+      "top_k": 2
+    },
+    {
+      "model": "moe_active_5p12m",
+      "dense_reference": "dense_5p12m",
+      "dense_parameter_count": 5123584,
+      "total_parameter_count": 9190912,
+      "active_parameter_proxy": 5127680,
+      "active_overhead_parameters": 4096,
+      "active_overhead_fraction": 0.000799440391725792,
+      "n_layers": 4,
+      "d_model": 256,
+      "dense_d_ff": 1984,
+      "expert_d_ff": 992,
+      "num_experts": 4,
+      "top_k": 2
+    },
+    {
+      "model": "moe_active_10m",
+      "dense_reference": "dense_10m",
+      "dense_parameter_count": 10000000,
+      "total_parameter_count": 17942400,
+      "active_parameter_proxy": 10006400,
+      "active_overhead_parameters": 6400,
+      "active_overhead_fraction": 0.00064,
+      "n_layers": 5,
+      "d_model": 320,
+      "dense_d_ff": 2480,
+      "expert_d_ff": 1240,
+      "num_experts": 4,
+      "top_k": 2
+    }
+  ]
+}
