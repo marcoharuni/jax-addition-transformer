@@ -215,7 +215,7 @@ class ScalingMetadataConfig:
     horizon_steps: int
 
     def __post_init__(self) -> None:
-        if self.schema_version != "scaling-result-v2":
+        if self.schema_version != "scaling-result":
             raise ValueError("unsupported scaling result schema")
         if len(self.protocol_fingerprint) != 64 or any(
             character not in "0123456789abcdef" for character in self.protocol_fingerprint

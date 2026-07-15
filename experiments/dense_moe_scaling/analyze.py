@@ -118,7 +118,7 @@ def flatten_record(record: dict[str, Any]) -> dict[str, Any]:
 
 
 def validate_collection(collection: dict[str, Any], architecture: str) -> list[dict[str, Any]]:
-    if collection.get("schema_version") != "scaling-collection-v2":
+    if collection.get("schema_version") != "scaling-collection":
         raise ValueError("unexpected collection schema")
     if collection.get("architecture") != architecture:
         raise ValueError("collection architecture mismatch")
@@ -136,7 +136,7 @@ def validate_collection(collection: dict[str, Any], architecture: str) -> list[d
             raise ValueError(f"incomplete or invalid run: {record.get('run_id')}")
         result = record.get("result")
         if not isinstance(result, dict) or result.get("schema_version") != RESULT_SCHEMA_VERSION:
-            raise ValueError(f"missing normalized v2 result: {record.get('run_id')}")
+            raise ValueError(f"missing normalized result: {record.get('run_id')}")
         row = flatten_record(record)
         if row["architecture"] != architecture:
             raise ValueError(f"architecture mismatch: {row['run_id']}")

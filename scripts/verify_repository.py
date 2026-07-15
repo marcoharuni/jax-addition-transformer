@@ -56,7 +56,6 @@ TEST_NAMES = [
     "moe_config",
     "moe_training",
     "moe_infrastructure",
-    "moe_scaling",
     "dense_moe_scaling",
     "scaling_worker",
     "model",
@@ -100,17 +99,6 @@ required = [
     "artifacts/moe-comparison-t4/seed-42/results.json",
     "artifacts/moe-comparison-t4/seed-42/failures.csv",
     "artifacts/moe-comparison-t4/seed-42/SHA256SUMS.txt",
-    "experiments/moe_scaling/MOE_SCALING.md",
-    "experiments/moe_scaling/configs.py",
-    "experiments/moe_scaling/run_grid.py",
-    "experiments/moe_scaling/analyze_results.py",
-    "experiments/moe_scaling/fit_scaling_law.py",
-    "experiments/moe_scaling/plot_results.py",
-    "experiments/moe_scaling/compare_dense_moe.py",
-    "experiments/moe_scaling/final_manifest.json",
-    "experiments/moe_scaling/architecture_summary.json",
-    "experiments/dense_scaling/configs/final_models/dense_5p12m.json",
-    "experiments/moe_scaling/configs/final_models/moe_active_5p12m.json",
     "experiments/dense_moe_scaling/protocol.json",
     "experiments/dense_moe_scaling/manifest.json",
     "experiments/dense_moe_scaling/dense_manifest.json",
@@ -127,6 +115,19 @@ required += [f"tests/test_{name}.py" for name in TEST_NAMES]
 missing = [name for name in required if not (ROOT / name).exists()]
 if missing:
     raise SystemExit(f"missing required files: {missing}")
+
+obsolete = [
+    ROOT / "experiments" / "dense_scaling",
+    ROOT / "experiments" / "moe_scaling",
+    ROOT / "experiments" / "moe_comparison",
+    ROOT / "artifacts" / "dense-scaling-final-t4",
+    ROOT / "artifacts" / "dense-scaling-pilot-t4",
+]
+if existing := [path for path in obsolete if path.exists()]:
+    raise SystemExit(f"obsolete historical paths remain: {existing}")
+
+if obsolete_figures := sorted((ROOT / "assets").glob("dense_scaling_*.svg")):
+    raise SystemExit(f"obsolete dense scaling figures remain: {obsolete_figures}")
 
 for path in ROOT.rglob("*"):
     if path.resolve() == Path(__file__).resolve() or ".venv" in path.parts:
@@ -197,10 +198,6 @@ if "1,000,000 / 1,000,000" not in readme:
 moe_result = json.loads((ROOT / "artifacts/moe-comparison-t4/seed-42/results.json").read_text())
 if moe_result["overall"]["correct"] != 999_981:
     raise SystemExit("standalone MoE result does not match the verified seed-42 run")
-manifest = json.loads((ROOT / "experiments/moe_scaling/final_manifest.json").read_text())
-if len(manifest) != 120 or len({row["run_id"] for row in manifest}) != 120:
-    raise SystemExit("final MoE scaling manifest must contain 120 unique runs")
-
 scaling_root = ROOT / "experiments" / "dense_moe_scaling"
 scaling_dense = json.loads((scaling_root / "dense_manifest.json").read_text())
 scaling_moe = json.loads((scaling_root / "moe_manifest.json").read_text())
@@ -221,8 +218,8 @@ if len(scaling_dense) != 16 or len(scaling_moe) != 16:
 all_scaling_rows = scaling_dense + scaling_moe
 if len({row["run_id"] for row in all_scaling_rows}) != 32:
     raise SystemExit("dense/MoE scaling run IDs must be unique")
-if any("seed42" in row["run_id"] or "v2" in row["run_id"] for row in all_scaling_rows):
-    raise SystemExit("canonical dense/MoE scaling run IDs must not contain seed42 or v2")
+if any("seed42" in row["run_id"] for row in all_scaling_rows):
+    raise SystemExit("canonical dense/MoE scaling run IDs must not contain seed42")
 if {row["model_id"] for row in scaling_dense} != {
     "dense_0p16m",
     "dense_0p64m",
@@ -257,5 +254,5 @@ for architecture, rows in (("dense", scaling_dense), ("moe", scaling_moe)):
 
 print(
     "Repository verification passed; exact dense model, standalone MoE evidence, "
-    "historical 120-run workflows, and the 16+16 dense/MoE workflow are present."
+    "and the 16+16 dense/MoE study are present."
 )

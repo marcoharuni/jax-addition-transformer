@@ -90,41 +90,20 @@ axis uses `6 × active parameters × sequence tokens`; routing, sorting, dispatc
 scatter-add, and hardware efficiency are intentionally excluded from that
 proxy and captured separately by measured T4 wall-clock time.
 
-## Dense-versus-MoE scaling protocol
+## Current dense-versus-MoE scaling study
 
-The final comparison protocol is frozen in
-`experiments/dense_moe_scaling/protocol.json`. It uses four dense models
-(`dense_0p16m`, `dense_0p64m`, `dense_2p16m`, and `dense_10m`) and their four
-matched-active MoE models at four independent horizons: 50, 125, 300, and 750
-updates. The 5.12M definitions remain available outside this canonical study.
-Split, parameter-initialization, and sampler seeds are distinct recorded fields
-even though all three are fixed to 42 in this study.
+The study uses four dense models (`dense_0p16m`, `dense_0p64m`,
+`dense_2p16m`, and `dense_10m`) and four matched-active MoE models. Each model
+is trained independently for 50, 125, 300, and 750 updates, producing 16 dense
+and 16 MoE runs. The split, initialization, and sampler use seed 42.
 
-Every horizon is initialized from scratch and has its own warmup-cosine
-schedule. The v2 schedule maps optimizer counts `0..horizon-1` to the complete
-schedule, so the final update uses the requested final learning rate. Both
-dense and MoE blocks use `jax.checkpoint`; rematerialization work is excluded
-from the reported `6 × N_active × D` proxy and is reflected in timing.
+Every horizon starts from a fresh initialization and owns its warmup-cosine
+schedule. Dense and MoE use the same dataset, answer-only objective, optimizer,
+precision, batch size, and evaluation procedure. Dense router losses are exact
+zeros; MoE adds its measured balance and router z-loss terms. Validation answer
+cross-entropy is always reported separately.
 
-The optimized expression is shared:
-
-```text
-L_total = L_answer + 1e-2 L_balance + 1e-3 L_z.
-```
-
-Dense blocks expose exact-zero router losses, while MoE blocks expose their
-measured router losses. The normalized result never conflates auxiliary terms
-with validation answer cross-entropy. AdamW decay covers attention and FFN
-matrix kernels, including expert matrices, but explicitly excludes router
-kernels.
-
-Completed-run acceptance is content-based rather than step-count-based. The
-runner verifies the protocol and full configuration fingerprints, run identity,
-fixed split fingerprint, exact endpoint, normalized schema, histories,
-environment metadata, and complete best/latest Orbax checkpoints. The three
-versioned result roots cannot be confused with the historical result roots.
-
-With one observation per coordinate, sampling uncertainty is not estimable.
-V2 analysis represents it as JSON `null` / CSV empty with status
-`unavailable_single_seed`; zero is not used as a stand-in and sample standard
-deviation is not calculated.
+Both architectures rematerialize every transformer block. Estimated compute is
+reported as `6 × active_parameter_proxy × input_tokens`; stored parameters and
+measured T4 wall-clock time are reported separately. Notebooks 02 and 04 contain
+the complete training and analysis workflows.

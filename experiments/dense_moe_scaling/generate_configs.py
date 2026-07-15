@@ -7,10 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from jax_addition_transformer.config import ExperimentConfig
+from jax_addition_transformer.config import ExperimentConfig, ModelConfig
 from jax_addition_transformer.scaling import canonical_fingerprint
-
-from experiments.moe_scaling.configs import moe_parameter_counts
 
 from .protocol import (
     COMBINED_MANIFEST_PATH,
@@ -27,8 +25,6 @@ from .protocol import (
 )
 
 
-DENSE_MODEL_DIR = ROOT / "experiments" / "dense_scaling" / "configs" / "final_models"
-MOE_MODEL_DIR = ROOT / "experiments" / "moe_scaling" / "configs" / "final_models"
 CONFIG_DIR = EXPERIMENT_ROOT / "configs"
 DENSE_MANIFEST_PATH = EXPERIMENT_ROOT / "dense_manifest.json"
 MOE_MANIFEST_PATH = EXPERIMENT_ROOT / "moe_manifest.json"
@@ -44,6 +40,12 @@ MOE_BY_DENSE = {
     "dense_0p64m": "moe_active_0p64m",
     "dense_2p16m": "moe_active_2p16m",
     "dense_10m": "moe_active_10m",
+}
+DENSE_MODEL_SPECS = {
+    "dense_0p16m": (2, 64, 1, 496),
+    "dense_0p64m": (2, 128, 2, 992),
+    "dense_2p16m": (3, 192, 3, 1488),
+    "dense_10m": (5, 320, 5, 2480),
 }
 
 
@@ -61,6 +63,38 @@ def dense_parameter_count(model: dict[str, Any]) -> int:
     return layers * (4 * width * width + 2 * width * feed_forward + 4 * width) + (
         vocabulary * width + positions * width + 2 * width
     )
+
+
+def moe_parameter_counts(model: dict[str, Any]) -> tuple[int, int]:
+    layers = int(model["n_layers"])
+    width = int(model["d_model"])
+    experts = int(model["num_experts"])
+    top_k = int(model["top_k"])
+    expert_width = int(model["expert_d_ff"])
+    vocabulary = int(model["vocab_size"])
+    positions = int(model["max_input_length"])
+    attention = 4 * width * width
+    router = width * experts
+    stored_experts = 2 * experts * width * expert_width
+    active_experts = 2 * top_k * width * expert_width
+    norms = 4 * width
+    shared = vocabulary * width + positions * width + 2 * width
+    stored = layers * (attention + router + stored_experts + norms) + shared
+    active = layers * (attention + router + active_experts + norms) + shared
+    return stored, active
+
+
+def base_config(model_id: str, architecture: str) -> dict[str, Any]:
+    layers, width, heads, feed_forward = DENSE_MODEL_SPECS[model_id]
+    dense = ModelConfig(
+        n_layers=layers,
+        d_model=width,
+        n_heads=heads,
+        n_kv_heads=heads,
+        d_ff=feed_forward,
+    )
+    model = dense if architecture == "dense" else ModelConfig.matched_moe(dense)
+    return ExperimentConfig(model=model).as_dict()
 
 
 def configured_run(
@@ -159,8 +193,8 @@ def build_grid(write: bool = True) -> tuple[list[dict[str, Any]], list[dict[str,
 
     for dense_name in DENSE_MODELS:
         sources = {
-            "dense": json.loads((DENSE_MODEL_DIR / f"{dense_name}.json").read_text()),
-            "moe": json.loads((MOE_MODEL_DIR / f"{MOE_BY_DENSE[dense_name]}.json").read_text()),
+            "dense": base_config(dense_name, "dense"),
+            "moe": base_config(dense_name, "moe"),
         }
         for architecture, source in sources.items():
             model_id = dense_name if architecture == "dense" else MOE_BY_DENSE[dense_name]

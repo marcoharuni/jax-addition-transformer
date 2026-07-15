@@ -1,1 +1,1 @@
-"""Fixed-seed dense-versus-MoE scaling protocol v2."""
+"""Fixed-seed dense-versus-MoE scaling study."""

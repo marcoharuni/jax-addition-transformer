@@ -10,8 +10,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0050.json",
-    "config_fingerprint": "a8fd256f5c1f477868c8d35f59de3106ef1cc72fab01e46704c0eb54b742d4dd",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "af5b39672e132cbdb69c11182031d61f306def31ce12759231f87e1e5d8f986e",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 162176,
     "active_parameter_proxy": 162176,
     "examples_seen": 102400,
@@ -19,7 +19,7 @@
     "supervised_tokens_4_seen": 409600,
     "training_pool_repetition_ratio": 0.512,
     "estimated_training_flops": 1494614016000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p16m_h0125",
@@ -32,8 +32,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0125.json",
-    "config_fingerprint": "f2ed7a53011c41626c0a2eaf6a10f2097ec1e86a24f354e2307fce38f834ce29",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "370b643568614574f35103302df20d2e4cd8378542012d021a267c3e7bb22787",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 162176,
     "active_parameter_proxy": 162176,
     "examples_seen": 256000,
@@ -41,7 +41,7 @@
     "supervised_tokens_4_seen": 1024000,
     "training_pool_repetition_ratio": 1.28,
     "estimated_training_flops": 3736535040000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p16m_h0300",
@@ -54,8 +54,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0300.json",
-    "config_fingerprint": "b69d3e6fe1c39d43ed9c6b3489bf5c34bdabb5ac881554b53e17d82f1072b9bc",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "1a902df785a1ff09080e4e4c9231921f857e30b4286d8dae541719a39cfef479",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 162176,
     "active_parameter_proxy": 162176,
     "examples_seen": 614400,
@@ -63,7 +63,7 @@
     "supervised_tokens_4_seen": 2457600,
     "training_pool_repetition_ratio": 3.072,
     "estimated_training_flops": 8967684096000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p16m_h0750",
@@ -76,8 +76,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0750.json",
-    "config_fingerprint": "a27aeddae5eca0d1a567147922368514ae0a8cc07a8a35ea9372fed32d311f93",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "9d13612adb4b5c22a6b6aa4e780777e90d9ee4dbd91d8ccf4bf8d8546bbfdc2f",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 162176,
     "active_parameter_proxy": 162176,
     "examples_seen": 1536000,
@@ -85,7 +85,7 @@
     "supervised_tokens_4_seen": 6144000,
     "training_pool_repetition_ratio": 7.68,
     "estimated_training_flops": 22419210240000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p64m_h0050",
@@ -98,8 +98,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0050.json",
-    "config_fingerprint": "9a4e58aabd70524a5fee80f07db48418f1d1f85f887673d90ae78f067b9da073",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "1098f5d2f9e7185757cc9318dd353b533701131957988731541f0479866dd0cb",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 643840,
     "active_parameter_proxy": 643840,
     "examples_seen": 102400,
@@ -107,7 +107,7 @@
     "supervised_tokens_4_seen": 409600,
     "training_pool_repetition_ratio": 0.512,
     "estimated_training_flops": 5933629440000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p64m_h0125",
@@ -120,8 +120,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0125.json",
-    "config_fingerprint": "92f3f4fab0b1593e98b1b526cf751df378672b13a7cf53697a4c031ae8413e86",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "62454ac892790bc6a210daa8f6e563406930f82c7e09fee8e4339f1aa5d852ac",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 643840,
     "active_parameter_proxy": 643840,
     "examples_seen": 256000,
@@ -129,7 +129,7 @@
     "supervised_tokens_4_seen": 1024000,
     "training_pool_repetition_ratio": 1.28,
     "estimated_training_flops": 14834073600000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p64m_h0300",
@@ -142,8 +142,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0300.json",
-    "config_fingerprint": "b694e834df6e3e6712784dbfb6c7ff28a936603d966670d116f4f84c68a782f0",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "5123669241088a9bfd9cdd87c2b0d92f50c881be20cdb67e0c2aea2d8b4742de",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 643840,
     "active_parameter_proxy": 643840,
     "examples_seen": 614400,
@@ -151,7 +151,7 @@
     "supervised_tokens_4_seen": 2457600,
     "training_pool_repetition_ratio": 3.072,
     "estimated_training_flops": 35601776640000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_0p64m_h0750",
@@ -164,8 +164,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0750.json",
-    "config_fingerprint": "b8601eff4b781a5d084e221cbac24df7609c789d6766eeac7cd07be1c67c51af",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "fa408dce48ea2a6d55e8e9d0447e02eb7ee1dd8c9f0ceab4c7465e302d0627d9",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 643840,
     "active_parameter_proxy": 643840,
     "examples_seen": 1536000,
@@ -173,7 +173,7 @@
     "supervised_tokens_4_seen": 6144000,
     "training_pool_repetition_ratio": 7.68,
     "estimated_training_flops": 89004441600000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_2p16m_h0050",
@@ -186,8 +186,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0050.json",
-    "config_fingerprint": "7721f75d83040d77e25811765273fef1a4c85c0179d7bf53b918e8adffbfd83f",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "b4fdd54d5f161bc80549dc0b71f432fb10f1e14469415c4ee416a6923c8bfeeb",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 2164608,
     "active_parameter_proxy": 2164608,
     "examples_seen": 102400,
@@ -195,7 +195,7 @@
     "supervised_tokens_4_seen": 409600,
     "training_pool_repetition_ratio": 0.512,
     "estimated_training_flops": 19949027328000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_2p16m_h0125",
@@ -208,8 +208,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0125.json",
-    "config_fingerprint": "bf822e84fc9ddb0bf98c6336ec522f99de70915537a792d371af1bb90ce56f41",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "0cf0c9279092d74062699bc00d5d98fd7c7e087d3021873cef821c056e8bbdb8",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 2164608,
     "active_parameter_proxy": 2164608,
     "examples_seen": 256000,
@@ -217,7 +217,7 @@
     "supervised_tokens_4_seen": 1024000,
     "training_pool_repetition_ratio": 1.28,
     "estimated_training_flops": 49872568320000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_2p16m_h0300",
@@ -230,8 +230,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0300.json",
-    "config_fingerprint": "2e1a28b7b5fc37f2d28e833bc42a19e7fcac2a42850f5971b4fcafd459b44f90",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "fa0e7a516297d74330e9bc6979f1bb35893fc606c39f500c63d54c10d4a8bf87",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 2164608,
     "active_parameter_proxy": 2164608,
     "examples_seen": 614400,
@@ -239,7 +239,7 @@
     "supervised_tokens_4_seen": 2457600,
     "training_pool_repetition_ratio": 3.072,
     "estimated_training_flops": 119694163968000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_2p16m_h0750",
@@ -252,8 +252,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0750.json",
-    "config_fingerprint": "c43bddb9ac8c9e8cecaaa99f0e1e6c7c9e1495062056abc9250d7c0dc6a23108",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "bd1310a2592dffcc55091f5e414f4d2f1df91bac22a4d13aad11f75637010de0",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 2164608,
     "active_parameter_proxy": 2164608,
     "examples_seen": 1536000,
@@ -261,7 +261,7 @@
     "supervised_tokens_4_seen": 6144000,
     "training_pool_repetition_ratio": 7.68,
     "estimated_training_flops": 299235409920000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_10m_h0050",
@@ -274,8 +274,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0050.json",
-    "config_fingerprint": "7a712059edc4954c95619c1c1d970ce90947bef2b94ece47dbab27410d450b63",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "677f568bb25cb04c67cd2ace0a36305f6289e4800d1e4069cee8a39fe97fefac",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 10000000,
     "active_parameter_proxy": 10000000,
     "examples_seen": 102400,
@@ -283,7 +283,7 @@
     "supervised_tokens_4_seen": 409600,
     "training_pool_repetition_ratio": 0.512,
     "estimated_training_flops": 92160000000000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_10m_h0125",
@@ -296,8 +296,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0125.json",
-    "config_fingerprint": "3822617ae7abb5a4ac56b252e28f78ea9c8f8f60f614b2bf7c4654ed1014bd06",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "8bb8a8e4134f4afffea2a57d10c16d47cfa3ea2b5a74c2bf1e003c0a1bef08d7",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 10000000,
     "active_parameter_proxy": 10000000,
     "examples_seen": 256000,
@@ -305,7 +305,7 @@
     "supervised_tokens_4_seen": 1024000,
     "training_pool_repetition_ratio": 1.28,
     "estimated_training_flops": 230400000000000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_10m_h0300",
@@ -318,8 +318,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0300.json",
-    "config_fingerprint": "91c79b3d9d42d12685b8d81f2f891c4beeb49086585472d2e31b5fc76c283d71",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "421dd0387836058ea86fe2e9303ae2cf4be1758b2d71e52969c05de761d811a8",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 10000000,
     "active_parameter_proxy": 10000000,
     "examples_seen": 614400,
@@ -327,7 +327,7 @@
     "supervised_tokens_4_seen": 2457600,
     "training_pool_repetition_ratio": 3.072,
     "estimated_training_flops": 552960000000000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   },
   {
     "run_id": "dense_10m_h0750",
@@ -340,8 +340,8 @@
     "initialization_seed": 42,
     "sampler_seed": 42,
     "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0750.json",
-    "config_fingerprint": "a42514dc8c4b1b7862095e1d79f1dfa32d44ea6b18dd50edfad10b53dd2a1a80",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "config_fingerprint": "23d5cbdff6f8f1791bed47b1466235f74d680256c2b8d9be5d6f799609f7e240",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "stored_parameters": 10000000,
     "active_parameter_proxy": 10000000,
     "examples_seen": 1536000,
@@ -349,6 +349,6 @@
     "supervised_tokens_4_seen": 6144000,
     "training_pool_repetition_ratio": 7.68,
     "estimated_training_flops": 1382400000000000,
-    "output_root": "scaling/dense"
+    "output_root": "scaling/notebook_02_dense"
   }
 ]

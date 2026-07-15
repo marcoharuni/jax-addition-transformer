@@ -9,7 +9,7 @@ from typing import Any
 from .config import ExperimentConfig
 
 
-RESULT_SCHEMA_VERSION = "scaling-result-v2"
+RESULT_SCHEMA_VERSION = "scaling-result"
 
 
 def canonical_fingerprint(value: Any) -> str:
@@ -25,7 +25,7 @@ def build_normalized_result(
     environment: dict[str, Any],
     split_metadata: dict[str, Any],
 ) -> dict[str, Any]:
-    """Build the architecture-neutral v2 result record written by training."""
+    """Build the architecture-neutral scaling result written by training."""
 
     metadata = config.scaling
     if metadata is None:

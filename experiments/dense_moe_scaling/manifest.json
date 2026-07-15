@@ -1,6 +1,6 @@
 {
-  "protocol_version": "dense-moe-scaling-v2",
-  "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+  "protocol_version": "dense-moe-scaling",
+  "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
   "dense_manifest": "experiments/dense_moe_scaling/dense_manifest.json",
   "moe_manifest": "experiments/dense_moe_scaling/moe_manifest.json",
   "dense_runs": [
@@ -15,8 +15,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0050.json",
-      "config_fingerprint": "a8fd256f5c1f477868c8d35f59de3106ef1cc72fab01e46704c0eb54b742d4dd",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "af5b39672e132cbdb69c11182031d61f306def31ce12759231f87e1e5d8f986e",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 162176,
       "active_parameter_proxy": 162176,
       "examples_seen": 102400,
@@ -24,7 +24,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 1494614016000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p16m_h0125",
@@ -37,8 +37,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0125.json",
-      "config_fingerprint": "f2ed7a53011c41626c0a2eaf6a10f2097ec1e86a24f354e2307fce38f834ce29",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "370b643568614574f35103302df20d2e4cd8378542012d021a267c3e7bb22787",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 162176,
       "active_parameter_proxy": 162176,
       "examples_seen": 256000,
@@ -46,7 +46,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 3736535040000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p16m_h0300",
@@ -59,8 +59,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0300.json",
-      "config_fingerprint": "b69d3e6fe1c39d43ed9c6b3489bf5c34bdabb5ac881554b53e17d82f1072b9bc",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "1a902df785a1ff09080e4e4c9231921f857e30b4286d8dae541719a39cfef479",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 162176,
       "active_parameter_proxy": 162176,
       "examples_seen": 614400,
@@ -68,7 +68,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 8967684096000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p16m_h0750",
@@ -81,8 +81,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p16m_h0750.json",
-      "config_fingerprint": "a27aeddae5eca0d1a567147922368514ae0a8cc07a8a35ea9372fed32d311f93",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "9d13612adb4b5c22a6b6aa4e780777e90d9ee4dbd91d8ccf4bf8d8546bbfdc2f",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 162176,
       "active_parameter_proxy": 162176,
       "examples_seen": 1536000,
@@ -90,7 +90,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 22419210240000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p64m_h0050",
@@ -103,8 +103,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0050.json",
-      "config_fingerprint": "9a4e58aabd70524a5fee80f07db48418f1d1f85f887673d90ae78f067b9da073",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "1098f5d2f9e7185757cc9318dd353b533701131957988731541f0479866dd0cb",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 643840,
       "active_parameter_proxy": 643840,
       "examples_seen": 102400,
@@ -112,7 +112,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 5933629440000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p64m_h0125",
@@ -125,8 +125,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0125.json",
-      "config_fingerprint": "92f3f4fab0b1593e98b1b526cf751df378672b13a7cf53697a4c031ae8413e86",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "62454ac892790bc6a210daa8f6e563406930f82c7e09fee8e4339f1aa5d852ac",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 643840,
       "active_parameter_proxy": 643840,
       "examples_seen": 256000,
@@ -134,7 +134,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 14834073600000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p64m_h0300",
@@ -147,8 +147,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0300.json",
-      "config_fingerprint": "b694e834df6e3e6712784dbfb6c7ff28a936603d966670d116f4f84c68a782f0",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "5123669241088a9bfd9cdd87c2b0d92f50c881be20cdb67e0c2aea2d8b4742de",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 643840,
       "active_parameter_proxy": 643840,
       "examples_seen": 614400,
@@ -156,7 +156,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 35601776640000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_0p64m_h0750",
@@ -169,8 +169,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_0p64m_h0750.json",
-      "config_fingerprint": "b8601eff4b781a5d084e221cbac24df7609c789d6766eeac7cd07be1c67c51af",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "fa408dce48ea2a6d55e8e9d0447e02eb7ee1dd8c9f0ceab4c7465e302d0627d9",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 643840,
       "active_parameter_proxy": 643840,
       "examples_seen": 1536000,
@@ -178,7 +178,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 89004441600000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_2p16m_h0050",
@@ -191,8 +191,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0050.json",
-      "config_fingerprint": "7721f75d83040d77e25811765273fef1a4c85c0179d7bf53b918e8adffbfd83f",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "b4fdd54d5f161bc80549dc0b71f432fb10f1e14469415c4ee416a6923c8bfeeb",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 2164608,
       "active_parameter_proxy": 2164608,
       "examples_seen": 102400,
@@ -200,7 +200,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 19949027328000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_2p16m_h0125",
@@ -213,8 +213,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0125.json",
-      "config_fingerprint": "bf822e84fc9ddb0bf98c6336ec522f99de70915537a792d371af1bb90ce56f41",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "0cf0c9279092d74062699bc00d5d98fd7c7e087d3021873cef821c056e8bbdb8",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 2164608,
       "active_parameter_proxy": 2164608,
       "examples_seen": 256000,
@@ -222,7 +222,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 49872568320000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_2p16m_h0300",
@@ -235,8 +235,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0300.json",
-      "config_fingerprint": "2e1a28b7b5fc37f2d28e833bc42a19e7fcac2a42850f5971b4fcafd459b44f90",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "fa0e7a516297d74330e9bc6979f1bb35893fc606c39f500c63d54c10d4a8bf87",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 2164608,
       "active_parameter_proxy": 2164608,
       "examples_seen": 614400,
@@ -244,7 +244,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 119694163968000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_2p16m_h0750",
@@ -257,8 +257,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_2p16m_h0750.json",
-      "config_fingerprint": "c43bddb9ac8c9e8cecaaa99f0e1e6c7c9e1495062056abc9250d7c0dc6a23108",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "bd1310a2592dffcc55091f5e414f4d2f1df91bac22a4d13aad11f75637010de0",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 2164608,
       "active_parameter_proxy": 2164608,
       "examples_seen": 1536000,
@@ -266,7 +266,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 299235409920000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_10m_h0050",
@@ -279,8 +279,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0050.json",
-      "config_fingerprint": "7a712059edc4954c95619c1c1d970ce90947bef2b94ece47dbab27410d450b63",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "677f568bb25cb04c67cd2ace0a36305f6289e4800d1e4069cee8a39fe97fefac",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 10000000,
       "active_parameter_proxy": 10000000,
       "examples_seen": 102400,
@@ -288,7 +288,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 92160000000000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_10m_h0125",
@@ -301,8 +301,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0125.json",
-      "config_fingerprint": "3822617ae7abb5a4ac56b252e28f78ea9c8f8f60f614b2bf7c4654ed1014bd06",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "8bb8a8e4134f4afffea2a57d10c16d47cfa3ea2b5a74c2bf1e003c0a1bef08d7",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 10000000,
       "active_parameter_proxy": 10000000,
       "examples_seen": 256000,
@@ -310,7 +310,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 230400000000000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_10m_h0300",
@@ -323,8 +323,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0300.json",
-      "config_fingerprint": "91c79b3d9d42d12685b8d81f2f891c4beeb49086585472d2e31b5fc76c283d71",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "421dd0387836058ea86fe2e9303ae2cf4be1758b2d71e52969c05de761d811a8",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 10000000,
       "active_parameter_proxy": 10000000,
       "examples_seen": 614400,
@@ -332,7 +332,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 552960000000000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     },
     {
       "run_id": "dense_10m_h0750",
@@ -345,8 +345,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/dense/dense_10m_h0750.json",
-      "config_fingerprint": "a42514dc8c4b1b7862095e1d79f1dfa32d44ea6b18dd50edfad10b53dd2a1a80",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "23d5cbdff6f8f1791bed47b1466235f74d680256c2b8d9be5d6f799609f7e240",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 10000000,
       "active_parameter_proxy": 10000000,
       "examples_seen": 1536000,
@@ -354,7 +354,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 1382400000000000,
-      "output_root": "scaling/dense"
+      "output_root": "scaling/notebook_02_dense"
     }
   ],
   "moe_runs": [
@@ -369,8 +369,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p16m_h0050.json",
-      "config_fingerprint": "e36376abc37d92ce3c5345931d6762bc00960226e526b423aa12ae555b719c35",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "d77937af29be68c877f686ae54a730fbb1b76a86630458889a11c14517c512eb",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 289664,
       "active_parameter_proxy": 162688,
       "examples_seen": 102400,
@@ -378,7 +378,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 1499332608000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p16m_h0125",
@@ -391,8 +391,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p16m_h0125.json",
-      "config_fingerprint": "31a0d0f69824a7fe6b753eadd264eada170641cc3127e81de4dac4689467ad3f",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "b675fecd6fe951673a5b16bbbfb391e6cc02eb9650b3c3b3a3f177f5ff83c569",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 289664,
       "active_parameter_proxy": 162688,
       "examples_seen": 256000,
@@ -400,7 +400,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 3748331520000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p16m_h0300",
@@ -413,8 +413,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p16m_h0300.json",
-      "config_fingerprint": "4bc241004dd90399ecafb567da580e4fb67333c7e3bde2be1acdd5562a19688b",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "c4e4643d8fd0c238b759dd6fd5316e12fd44bf27253e038d7b416fadc46bbcaa",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 289664,
       "active_parameter_proxy": 162688,
       "examples_seen": 614400,
@@ -422,7 +422,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 8995995648000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p16m_h0750",
@@ -435,8 +435,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p16m_h0750.json",
-      "config_fingerprint": "9ddc06a6b9afb5f4bea4069b9fe5161912549d836ebdddb6b5f9edab283a1a48",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "97fa630b502cb8271bd1fe6b33fad9ea957b128602ffe175c97f4e512fff956d",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 289664,
       "active_parameter_proxy": 162688,
       "examples_seen": 1536000,
@@ -444,7 +444,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 22489989120000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p64m_h0050",
@@ -457,8 +457,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p64m_h0050.json",
-      "config_fingerprint": "8322b5d63e05300eb775fe9d4fc6f29a028c84ee58ca4767526a15dc60953de1",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "4d17e827b85a77e64a7bd44775586eb1ad0a711f123214ce9cacb45ded77ca9e",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 1152768,
       "active_parameter_proxy": 644864,
       "examples_seen": 102400,
@@ -466,7 +466,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 5943066624000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p64m_h0125",
@@ -479,8 +479,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p64m_h0125.json",
-      "config_fingerprint": "3908ad7050562517dc380c551d346bba1cc52d1fac925c07732df5adcf4f00b7",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "3777747840df0b9af0843126b3fcc0ee99f82945c7239830f8ff3f27c3e18f86",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 1152768,
       "active_parameter_proxy": 644864,
       "examples_seen": 256000,
@@ -488,7 +488,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 14857666560000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p64m_h0300",
@@ -501,8 +501,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p64m_h0300.json",
-      "config_fingerprint": "34d276793e76ac3f9099f541e7bfc46a0b0f9ed42814bcff1a7adaa46a0e45ae",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "d0e88fb5857dd2b3d3e3feaf641d998fc838658989e330906360bf606d69ed86",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 1152768,
       "active_parameter_proxy": 644864,
       "examples_seen": 614400,
@@ -510,7 +510,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 35658399744000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_0p64m_h0750",
@@ -523,8 +523,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_0p64m_h0750.json",
-      "config_fingerprint": "298e9ae2feae23a8dc369c56759705e787ba3c08e4070d423cdf03e9904fbd05",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "99a6c8d657b8519e86622eaae22d6656684b89594d8513ee9b2bf9aa3163a832",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 1152768,
       "active_parameter_proxy": 644864,
       "examples_seen": 1536000,
@@ -532,7 +532,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 89145999360000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_2p16m_h0050",
@@ -545,8 +545,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_2p16m_h0050.json",
-      "config_fingerprint": "15d30c90cda29d51f56b0aaeb97fd12ad15007db21ede7a9f620f36e61f03b4f",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "1bd6f340afec9878797b3391f717b2c71f4877772e1429ad3fc15aa4bf6973a9",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 3881088,
       "active_parameter_proxy": 2166912,
       "examples_seen": 102400,
@@ -554,7 +554,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 19970260992000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_2p16m_h0125",
@@ -567,8 +567,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_2p16m_h0125.json",
-      "config_fingerprint": "5266035948a62b786b0aa39ba43ff8be252c7b8d9004d789c3a34d8a2ead316f",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "8211d105d2466267d70d14ece666d0f5d6298b5daa833da4ceb35480d92ab065",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 3881088,
       "active_parameter_proxy": 2166912,
       "examples_seen": 256000,
@@ -576,7 +576,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 49925652480000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_2p16m_h0300",
@@ -589,8 +589,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_2p16m_h0300.json",
-      "config_fingerprint": "b29df5352effb514ee167e4d46fe91bca83f901762d5d9e141b0eca060d28a22",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "ed38bff83191216fb15bac596733849eb930d39acbf307d7397753c7fa9c9847",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 3881088,
       "active_parameter_proxy": 2166912,
       "examples_seen": 614400,
@@ -598,7 +598,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 119821565952000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_2p16m_h0750",
@@ -611,8 +611,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_2p16m_h0750.json",
-      "config_fingerprint": "ed1d6eaf66b1459362098354b5350815615c9a4e0c90b91958d485064ea4d4d9",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "aa25cf43a35847db1f93dd86bca2dcbf866fe289bede42c2112a00d3148b3472",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 3881088,
       "active_parameter_proxy": 2166912,
       "examples_seen": 1536000,
@@ -620,7 +620,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 299553914880000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_10m_h0050",
@@ -633,8 +633,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_10m_h0050.json",
-      "config_fingerprint": "0297996754447a5da82e5bc0c18cc6e6efdd6b7e2f8bf777153b838aaeb7bf79",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "35fbb2ab2fb612a08aec9a6eacc3b75ac7d05b756a3d00f6d64ae5e211ab9deb",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 17942400,
       "active_parameter_proxy": 10006400,
       "examples_seen": 102400,
@@ -642,7 +642,7 @@
       "supervised_tokens_4_seen": 409600,
       "training_pool_repetition_ratio": 0.512,
       "estimated_training_flops": 92218982400000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_10m_h0125",
@@ -655,8 +655,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_10m_h0125.json",
-      "config_fingerprint": "d8006a45e6cb9b74fb4bbbc3da2c1751d67ee7b3d75e808a5320ef32515bd0f4",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "9aca80a74eeeed4657f6f7e92167323235da86192936db5804ee6105c853da46",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 17942400,
       "active_parameter_proxy": 10006400,
       "examples_seen": 256000,
@@ -664,7 +664,7 @@
       "supervised_tokens_4_seen": 1024000,
       "training_pool_repetition_ratio": 1.28,
       "estimated_training_flops": 230547456000000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_10m_h0300",
@@ -677,8 +677,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_10m_h0300.json",
-      "config_fingerprint": "cf4e76a6a38e9a1eff1a51ed9973f27df88f86818a920a872d6186d2d3fc1b31",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "3d06d0b09251ca1a3bd32927fb9d5a5a3b9b426346d78ee3c435d031748c2aeb",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 17942400,
       "active_parameter_proxy": 10006400,
       "examples_seen": 614400,
@@ -686,7 +686,7 @@
       "supervised_tokens_4_seen": 2457600,
       "training_pool_repetition_ratio": 3.072,
       "estimated_training_flops": 553313894400000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     },
     {
       "run_id": "moe_active_10m_h0750",
@@ -699,8 +699,8 @@
       "initialization_seed": 42,
       "sampler_seed": 42,
       "config": "experiments/dense_moe_scaling/configs/moe/moe_active_10m_h0750.json",
-      "config_fingerprint": "7e1a76eef771fa5bff4b0726a1a8bc356b1ce9991234acf4de1414bc5619da86",
-      "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+      "config_fingerprint": "d06a17ecec9160daf574fa883dfba023408bc19f36687c617e6351fcb46402c9",
+      "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
       "stored_parameters": 17942400,
       "active_parameter_proxy": 10006400,
       "examples_seen": 1536000,
@@ -708,7 +708,7 @@
       "supervised_tokens_4_seen": 6144000,
       "training_pool_repetition_ratio": 7.68,
       "estimated_training_flops": 1383284736000000,
-      "output_root": "scaling/moe"
+      "output_root": "scaling/notebook_04_moe"
     }
   ]
 }

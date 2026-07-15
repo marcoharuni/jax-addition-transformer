@@ -24,18 +24,8 @@ three-digit-plus-three-digit examples and concentrated in chained-carry cases.
 The large `best_checkpoint.pkl` and `latest_checkpoint.pkl` files are not
 committed. They remain external run assets.
 
-## Important protocol distinction
+## Study relationship
 
-This standalone result is a verified end-to-end demonstration of the top-2
-`jax.lax.ragged_dot` model. It is **not silently inserted into the final
-package-based 120-run scaling grid**. The standalone notebook uses its own
-visible model definition, residual-scaled output initialization, a top-1
-Switch-style assignment fraction in its balance term, router-excluding weight
-decay, pickle checkpoints, and an exhaustive evaluation flow. The package
-runner uses the repository model, an all-top-k balance fraction, the package's
-structural FFN decay mask, and Orbax run artifacts.
-
-The final dense-versus-MoE scaling comparison therefore reruns every MoE grid
-point, including 10M-active / 175 steps / seed 42, under one consistent package
-protocol. This preserves comparability rather than mixing results from two
-implementations.
+This is the verified standalone result produced by notebook 03. Its 175-step
+run is not a coordinate in the current 50, 125, 300, and 750-step scaling
+study, so it is reported separately rather than mixed into notebooks 02 and 04.

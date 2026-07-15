@@ -301,7 +301,7 @@ def train(
     answer_tokens_seen = examples_seen * config.task.answer_digits
     final_record = history[-1] if history else {}
     summary = {
-        "schema_version": "training-summary-v2" if config.scaling else "training-summary-v1",
+        "schema_version": "training-summary" if config.scaling else "training-summary-v1",
         "run_id": config.scaling.run_id if config.scaling else None,
         "protocol_fingerprint": (config.scaling.protocol_fingerprint if config.scaling else None),
         "config_fingerprint": config.fingerprint,

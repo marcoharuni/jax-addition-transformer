@@ -16,12 +16,12 @@ HORIZONS = (50, 125, 300, 750)
 MODEL_SIZES_PER_ARCHITECTURE = 4
 RUNS_PER_ARCHITECTURE = MODEL_SIZES_PER_ARCHITECTURE * len(HORIZONS)
 FIXED_SEED = 42
-PROTOCOL_VERSION = "dense-moe-scaling-v2"
-RESULT_SCHEMA_VERSION = "scaling-result-v2"
+PROTOCOL_VERSION = "dense-moe-scaling"
+RESULT_SCHEMA_VERSION = "scaling-result"
 OUTPUT_ROOTS = {
-    "dense": "scaling/dense",
-    "moe": "scaling/moe",
-    "comparison": "scaling/comparison",
+    "dense": "scaling/notebook_02_dense",
+    "moe": "scaling/notebook_04_moe",
+    "comparison": "scaling/dense_moe_comparison",
 }
 
 

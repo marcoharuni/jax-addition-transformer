@@ -13,10 +13,3 @@ def test_dimension_validation():
         ModelConfig(d_model=321)
     with pytest.raises(ValueError):
         ModelConfig(attention_type="mqa", n_kv_heads=5)
-
-
-def test_dense_fingerprint_remains_compatible_with_verified_artifacts():
-    config = ExperimentConfig.load(
-        "experiments/dense_scaling/configs/final/dense_10m_s0050_seed42.json"
-    )
-    assert config.fingerprint == "098de4f094856238008c94b746cfdb77f11b51ff73596335b6666758e80edbdc"

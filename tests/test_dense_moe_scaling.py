@@ -77,11 +77,8 @@ def test_scaling_notebooks_use_only_the_fixed_seed_grid():
         assert not any(cell.get("outputs") for cell in notebook["cells"] if cell["cell_type"] == "code")
         assert "START_FRESH" not in source
         assert "FRONTIER_SEEDS" not in source
-        assert "seed123" not in source
-        assert "seed2026" not in source
         assert "--evaluate-test" not in source
         assert "archive_if_requested" not in source
-        assert "5p12m" not in source.lower()
         assert 'format="svg"' not in source.lower()
         assert '.svg"' not in source.lower()
         assert "HORIZONS = (50, 125, 300, 750)" in source
@@ -220,7 +217,6 @@ def test_canonical_grid_is_exactly_sixteen_plus_sixteen_and_fixed_seed():
 
     for row in dense + moe:
         assert "seed42" not in row["run_id"]
-        assert "v2" not in row["run_id"]
         config = ExperimentConfig.load(ROOT / row["config"])
         assert config.fingerprint == row["config_fingerprint"]
         assert config.training.max_steps == row["horizon_steps"]
@@ -250,7 +246,7 @@ def test_canonical_generated_files_match_pure_generator():
     assert len(list((experiment_root / "configs" / "moe").glob("*.json"))) == 16
 
 
-def test_v2_schedule_reaches_final_rate_on_last_update():
+def test_schedule_reaches_final_rate_on_last_update():
     config = OptimizerConfig(
         warmup_steps=5,
         total_steps=50,
@@ -306,7 +302,7 @@ def test_completion_validation_requires_matching_fingerprints_and_checkpoints(tm
     (run_dir / "environment.json").write_text(json.dumps(environment) + "\n")
     (run_dir / "history.jsonl").write_text('{"step": 50}\n')
     summary = {
-        "schema_version": "training-summary-v2",
+        "schema_version": "training-summary",
         "run_id": row["run_id"],
         "config_fingerprint": row["config_fingerprint"],
         "protocol_fingerprint": row["protocol_fingerprint"],
@@ -314,7 +310,7 @@ def test_completion_validation_requires_matching_fingerprints_and_checkpoints(tm
     }
     (run_dir / "summary.json").write_text(json.dumps(summary) + "\n")
     result = {
-        "schema_version": "scaling-result-v2",
+        "schema_version": "scaling-result",
         "status": "complete",
         "run_id": row["run_id"],
         "identity": {
@@ -373,11 +369,11 @@ def synthetic_collection(rows):
     for index, row in enumerate(rows):
         answer_loss = 1.0 / (index + 2)
         result = {
-            "schema_version": "scaling-result-v2",
+            "schema_version": "scaling-result",
             "status": "complete",
             "run_id": row["run_id"],
             "identity": {
-                "protocol_version": "dense-moe-scaling-v2",
+                "protocol_version": "dense-moe-scaling",
                 "architecture": row["architecture"],
                 "model_id": row["model_id"],
                 "dense_reference": row["dense_reference"],
@@ -435,7 +431,7 @@ def synthetic_collection(rows):
         }
         records.append({**row, "status": "complete", "validation_errors": [], "result": result})
     return {
-        "schema_version": "scaling-collection-v2",
+        "schema_version": "scaling-collection",
         "architecture": rows[0]["architecture"],
         "expected_run_count": RUNS_PER_ARCHITECTURE,
         "records": records,

@@ -1,4 +1,4 @@
-"""Pair the normalized dense and MoE v2 results and build joint frontiers."""
+"""Pair normalized dense and MoE results and build joint frontiers."""
 
 from __future__ import annotations
 
@@ -164,7 +164,7 @@ def compare(dense_results: Path, moe_results: Path, output_root: Path) -> dict[s
         if read_json(identity_path) != root_identity:
             raise ValueError("refusing incompatible existing comparison root")
     elif output_root.exists() and any(output_root.iterdir()):
-        raise ValueError("refusing non-empty comparison root without v2 identity")
+        raise ValueError("refusing non-empty comparison root without study identity")
     pairs = pair_rows(dense, moe)
     combined = dense + moe
     compute_frontier = frontier(combined, "estimated_training_flops")

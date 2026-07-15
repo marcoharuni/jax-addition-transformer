@@ -1,6 +1,6 @@
 {
-  "protocol_version": "dense-moe-scaling-v2",
-  "result_schema_version": "scaling-result-v2",
+  "protocol_version": "dense-moe-scaling",
+  "result_schema_version": "scaling-result",
   "study": {
     "architectures": [
       "dense",
@@ -127,9 +127,9 @@
     ]
   },
   "output_roots": {
-    "dense": "scaling/dense",
-    "moe": "scaling/moe",
-    "comparison": "scaling/comparison"
+    "dense": "scaling/notebook_02_dense",
+    "moe": "scaling/notebook_04_moe",
+    "comparison": "scaling/dense_moe_comparison"
   },
-  "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c"
+  "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340"
 }

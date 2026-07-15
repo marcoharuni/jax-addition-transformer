@@ -56,9 +56,9 @@
     "checkpoint_interval": 50
   },
   "scaling": {
-    "schema_version": "scaling-result-v2",
-    "protocol_version": "dense-moe-scaling-v2",
-    "protocol_fingerprint": "d6adac32d1a6656d3bce97712cd92c14e98de710e11dc78f93651136bbdcdc7c",
+    "schema_version": "scaling-result",
+    "protocol_version": "dense-moe-scaling",
+    "protocol_fingerprint": "70698da2f77fcfec6c469fc85c820bd25115e2d2086c82afe63c8c548f971340",
     "run_id": "dense_2p16m_h0300",
     "model_id": "dense_2p16m",
     "dense_reference": "dense_2p16m",

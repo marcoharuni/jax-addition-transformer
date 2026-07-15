@@ -133,7 +133,7 @@ def validate_complete_run(run_dir: Path, row: dict[str, Any]) -> list[str]:
         result = read_json(run_dir / "result.json")
         environment = read_json(run_dir / "environment.json")
         split = read_json(run_dir / "split_metadata.json")
-        if summary.get("schema_version") != "training-summary-v2":
+        if summary.get("schema_version") != "training-summary":
             errors.append("summary schema mismatch")
         if summary.get("run_id") != row["run_id"]:
             errors.append("summary run ID mismatch")
@@ -242,7 +242,7 @@ def initialize_output_root(
             raise ValueError(f"refusing incompatible existing output root: {output_root}")
         return
     if output_root.exists() and any(output_root.iterdir()):
-        raise ValueError(f"refusing non-empty output root without v2 identity: {output_root}")
+        raise ValueError(f"refusing non-empty output root without study identity: {output_root}")
     if not dry_run:
         output_root.mkdir(parents=True, exist_ok=True)
         write_json_atomic(identity_path, expected)
@@ -346,7 +346,7 @@ def collect_results(
             record["failure"] = read_json(run_dir / "failure.json")
         records.append(record)
     collection = {
-        "schema_version": "scaling-collection-v2",
+        "schema_version": "scaling-collection",
         "architecture": architecture,
         "expected_run_count": RUNS_PER_ARCHITECTURE,
         "records": records,
@@ -392,7 +392,7 @@ def main() -> None:
             f"architecture manifest must contain {RUNS_PER_ARCHITECTURE} unique runs"
         )
     if {row["split_seed"] for row in manifest} != {FIXED_SEED}:
-        raise ValueError("v2 manifest does not use the fixed seed")
+        raise ValueError("manifest does not use the fixed seed")
     initialize_output_root(output_root, args.architecture, protocol_hash, dry_run=args.dry_run)
 
     if args.collect_only:
