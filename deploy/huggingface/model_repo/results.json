@@ -1,0 +1,51 @@
+{
+  "parameter_count": 10000000,
+  "checkpoint_step": 750,
+  "evaluation_seconds": 144.31183935900003,
+  "overall": {
+    "correct": 1000000,
+    "total": 1000000,
+    "exact_match": 1.0,
+    "failures": 0,
+    "invalid_generations": 0
+  },
+  "splits": {
+    "train": {
+      "correct": 200000,
+      "total": 200000,
+      "exact_match": 1.0
+    },
+    "validation": {
+      "correct": 20000,
+      "total": 20000,
+      "exact_match": 1.0
+    },
+    "test": {
+      "correct": 780000,
+      "total": 780000,
+      "exact_match": 1.0
+    }
+  },
+  "carry_patterns": {
+    "000": 1.0,
+    "001": 1.0,
+    "010": 1.0,
+    "011": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "110": 1.0,
+    "111": 1.0
+  },
+  "operand_lengths": {
+    "1\u00d71": 1.0,
+    "1\u00d72": 1.0,
+    "1\u00d73": 1.0,
+    "2\u00d71": 1.0,
+    "2\u00d72": 1.0,
+    "2\u00d73": 1.0,
+    "3\u00d71": 1.0,
+    "3\u00d72": 1.0,
+    "3\u00d73": 1.0
+  },
+  "commutativity_consistency": 1.0
+}

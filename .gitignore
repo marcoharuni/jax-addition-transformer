@@ -9,6 +9,7 @@ build/
 runs/*
 !runs/.gitkeep
 .ipynb_checkpoints/
+.local/
 
 # Raw dense-scaling runs and checkpoints
 experiments/dense_scaling/results/
@@ -19,3 +20,7 @@ experiments/moe_scaling/results/
 # Local Colab/run archives
 *.zip
 *.pkl
+
+# Hugging Face deployment build products
+deploy/huggingface/model_repo/model.safetensors
+deploy/huggingface/model_repo/*.sha256

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "fingerprint": "jax-0.8.1-flax-0.12.2-cuda12-v1",
+  "python": "3.12",
+  "accelerator": "NVIDIA T4",
+  "uv_bootstrap_version": "0.11.28",
+  "versions": {
+    "jax": "0.8.1",
+    "jaxlib": "0.8.1",
+    "jax-cuda12-plugin": "0.8.1",
+    "jax-cuda12-pjrt": "0.8.1",
+    "flax": "0.12.2",
+    "optax": "0.2.6",
+    "numpy": "2.3.3",
+    "matplotlib": "3.10.7",
+    "pandas": "2.3.3",
+    "scipy": "1.16.3"
+  },
+  "notebooks": {
+    "01_build_train_exact_10m.ipynb": [
+      "jax[cuda12]==0.8.1",
+      "flax==0.12.2",
+      "optax==0.2.6",
+      "numpy==2.3.3",
+      "matplotlib==3.10.7"
+    ],
+    "02_dense_scaling_laws.ipynb": [
+      "jax[cuda12]==0.8.1",
+      "flax==0.12.2",
+      "optax==0.2.6",
+      "numpy==2.3.3",
+      "pandas==2.3.3",
+      "matplotlib==3.10.7",
+      "scipy==1.16.3"
+    ],
+    "03_moe_ragged_dot_t4.ipynb": [
+      "jax[cuda12]==0.8.1",
+      "flax==0.12.2",
+      "optax==0.2.6",
+      "numpy==2.3.3",
+      "matplotlib==3.10.7"
+    ],
+    "04_moe_scaling_t4.ipynb": [
+      "jax[cuda12]==0.8.1",
+      "flax==0.12.2",
+      "optax==0.2.6",
+      "numpy==2.3.3",
+      "pandas==2.3.3",
+      "matplotlib==3.10.7",
+      "scipy==1.16.3"
+    ]
+  }
+}

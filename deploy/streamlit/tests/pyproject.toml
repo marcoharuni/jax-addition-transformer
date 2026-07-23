@@ -1,0 +1,22 @@
+[project]
+name = "jax-addition-transformer-streamlit-tests"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "streamlit==1.60.0",
+  "jax==0.8.1",
+  "jaxlib==0.8.1",
+  "flax==0.12.2",
+  "numpy==2.3.3",
+  "safetensors==0.6.2",
+  "huggingface-hub==1.24.0",
+  "playwright==1.61.0",
+  "pytest==8.4.2",
+  "ruff==0.14.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["."]

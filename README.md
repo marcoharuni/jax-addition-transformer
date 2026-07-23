@@ -134,8 +134,20 @@ task-specific result rather than a universal claim about MoE scaling.
 | [`03_moe_ragged_dot_t4.ipynb`](notebooks/03_moe_ragged_dot_t4.ipynb) | Reproduce the verified standalone ragged-dot MoE result | [Open on `main`](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/03_moe_ragged_dot_t4.ipynb) |
 | [`04_moe_scaling_t4.ipynb`](notebooks/04_moe_scaling_t4.ipynb) | Run and analyze the current MoE sweep and compare it with dense results | [Open on `main`](https://colab.research.google.com/github/marcoharuni/jax-addition-transformer/blob/main/notebooks/04_moe_scaling_t4.ipynb) |
 
-Select **Runtime → Change runtime type → T4 GPU**, then use **Runtime → Run
-all**.
+For a clean Colab run:
+
+1. Select **Runtime → Change runtime type → T4 GPU**.
+2. Run the first environment cell. It creates an isolated pinned CUDA 12
+   environment from
+   [`configs/colab-runtime.json`](configs/colab-runtime.json) with `uv`.
+3. Allow the single automatic Python-process restart.
+4. After Colab reconnects, use **Runtime → Run all**.
+5. Confirm that the validation cell reports `Backend: gpu` before training.
+
+The Colab environment deliberately pins JAX/JAXlib 0.8.1, the matching CUDA 12
+plugin 0.8.1, Flax 0.12.2, Optax 0.2.6, and NumPy 2.3.3 together. Leaving
+`jax[cuda12]` unbounded can install JAX 0.11.0 beside Flax 0.12.2, causing the
+`jax.core.Effect` error while importing `flax.nnx`.
 
 ## Artifacts
 

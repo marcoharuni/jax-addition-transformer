@@ -1,0 +1,63 @@
+{
+  "source_checkpoint_sha256": "8a972732c1a105fafa9cd204d33fd933c46d579ebf8f374588368b93dab5c851",
+  "weights_sha256": "12550b41ec408b6c685c71eca99caabcda6e677b8232e44cdb4e15b5a0a26ab3",
+  "parameter_count": 10000000,
+  "tensor_count": 54,
+  "checkpoint_step": 750,
+  "validation": {
+    "loss": 6.967743538552896e-05,
+    "token_accuracy": 1.0,
+    "exact_match": 1.0,
+    "step": 750
+  },
+  "required_case_internal_digits": [
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      9,
+      7,
+      5,
+      0
+    ],
+    [
+      5,
+      7,
+      2,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      8,
+      9,
+      9,
+      1
+    ]
+  ]
+}
