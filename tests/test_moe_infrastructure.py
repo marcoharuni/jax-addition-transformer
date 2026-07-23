@@ -26,12 +26,12 @@ def test_colab_notebook_is_clean():
     assert len(notebook.cells) == 36
     assert "colab.research.google.com/github/marcoharuni" in markdown_text
     assert "blob/main/notebooks/03_moe_ragged_dot_t4.ipynb" in markdown_text
-    assert '"jax[cuda12]==0.7.2"' in code
-    assert '"flax==0.12.0"' in code
+    assert '"jax[cuda12]==0.8.1"' in code
+    assert '"flax==0.12.2"' in code
     assert '"optax==0.2.6"' in code
     assert "XLA_PYTHON_CLIENT_PREALLOCATE" in code
     assert "cuda_malloc_async" in code
-    assert 'subprocess.run(["nvidia-smi"], check=True)' in code
+    assert '"nvidia-smi", "--query-gpu=name,driver_version"' in code
     assert 'TOKENS = "0123456789 +="' in code
     assert "class RaggedTop2MoE(nnx.Module)" in code
     assert "class AdditionMoETransformer(nnx.Module)" in code
