@@ -34,7 +34,7 @@ from scratch with JAX primitives and trained to add ordered pairs of integers
 from `0` through `999`. The model has exactly **10,000,000 trainable
 parameters**.
 
-Try the [live Gradio Space](https://huggingface.co/spaces/marcoharuni95/jax-addition-transformer).
+Try the [live Streamlit application](https://jax-addition-transformer-echwjzpyosvu3q8t5bfeb5.streamlit.app).
 
 ## Verified result
 

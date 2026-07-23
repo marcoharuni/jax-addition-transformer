@@ -16,6 +16,14 @@ CASES = (
 )
 
 
+def app_surface(page):
+    frame = page.frame(url=lambda url: "/~/+/" in url)
+    if frame is None:
+        page.wait_for_timeout(2_000)
+        frame = page.frame(url=lambda url: "/~/+/" in url)
+    return frame or page
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("url")
@@ -32,15 +40,16 @@ def main() -> None:
         )
         desktop = browser.new_page(viewport={"width": 1440, "height": 1000})
         desktop.goto(args.url, wait_until="networkidle", timeout=120_000)
-        desktop.get_by_role("heading", name="JAX Addition Transformer").wait_for()
+        desktop_app = app_surface(desktop)
+        desktop_app.get_by_role("heading", name="JAX Addition Transformer").wait_for()
         desktop.evaluate("window.scrollTo(0, 0)")
         if args.artifacts:
             desktop.screenshot(path=args.artifacts / "desktop-initial.png", full_page=True)
         for index, (prompt, expected) in enumerate(CASES):
-            chat_input = desktop.locator('[data-testid="stChatInput"] textarea')
+            chat_input = desktop_app.locator('[data-testid="stChatInput"] textarea')
             chat_input.fill(prompt)
             chat_input.press("Enter")
-            answer = desktop.locator(".answer-number").nth(index)
+            answer = desktop_app.locator(".answer-number").nth(index)
             answer.wait_for(timeout=120_000)
             if answer.inner_text().strip() != expected:
                 raise AssertionError(f"{prompt!r} produced {answer.inner_text()!r}, expected {expected}")
@@ -49,12 +58,12 @@ def main() -> None:
             ("12 * 3", "addition only"),
             ("1000 + 1", "between 0 and 999"),
         ):
-            chat_input = desktop.locator('[data-testid="stChatInput"] textarea')
+            chat_input = desktop_app.locator('[data-testid="stChatInput"] textarea')
             chat_input.fill(prompt)
             chat_input.press("Enter")
-            desktop.get_by_text(expected_text, exact=False).last.wait_for(timeout=30_000)
+            desktop_app.get_by_text(expected_text, exact=False).last.wait_for(timeout=30_000)
 
-        latency_text = desktop.locator(".latency").all_inner_texts()
+        latency_text = desktop_app.locator(".latency").all_inner_texts()
         if len(latency_text) != len(CASES):
             raise AssertionError("each valid response must display inference latency")
         if args.artifacts:
@@ -62,10 +71,11 @@ def main() -> None:
 
         mobile = browser.new_page(viewport={"width": 390, "height": 844}, is_mobile=True)
         mobile.goto(args.url, wait_until="networkidle", timeout=120_000)
-        mobile.get_by_role("heading", name="JAX Addition Transformer").wait_for()
-        mobile.locator('[data-testid="stChatInput"] textarea').wait_for()
+        mobile_app = app_surface(mobile)
+        mobile_app.get_by_role("heading", name="JAX Addition Transformer").wait_for()
+        mobile_app.locator('[data-testid="stChatInput"] textarea').wait_for()
         mobile.evaluate("document.activeElement.blur(); window.scrollTo(0, 0)")
-        mobile.locator(".editorial-masthead").scroll_into_view_if_needed()
+        mobile_app.locator(".editorial-masthead").scroll_into_view_if_needed()
         if args.artifacts:
             mobile.screenshot(path=args.artifacts / "mobile.png", full_page=True)
         browser.close()
